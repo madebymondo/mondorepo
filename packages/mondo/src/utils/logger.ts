@@ -19,3 +19,13 @@ export function logGreen(message: string) {
 export function logRed(message: string) {
 	return console.log(chalk.red(message));
 }
+
+/**
+ * Logs a value with chalk.yellow
+ *
+ * @param message Value passed to chalk
+ * @returns Yellow console.log message
+ */
+export function logYellow(message: string) {
+	return console.log(chalk.yellow(message));
+}
