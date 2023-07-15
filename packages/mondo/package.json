@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "author": "madebymondo",
     "license": "MIT",
-    "description": "Bean is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
+    "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
     "type": "module",
     "main": "./dist/core.js",
     "types": "./src/types/mondo.d.ts",

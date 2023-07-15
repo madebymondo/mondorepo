@@ -22,7 +22,7 @@ const program = new Command();
 
 program
 	.command('dev')
-	.description('Starts development server for the Bean site')
+	.description('Starts development server for the Mondo site')
 	.action(async () => {
 		logGreen('Starting development server...');
 		await SITE.runDev();
