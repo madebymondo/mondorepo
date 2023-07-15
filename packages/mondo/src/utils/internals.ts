@@ -1,5 +1,10 @@
 import { DynamicallyImportedFile, ConfigOptions } from '@mondo/mondo';
 
+export const DEFAULT_MONDO_CONFIGURATION: ConfigOptions = {
+	root: 'src',
+	port: 3000,
+};
+
 /**
  * Formats the data from the mondo.config.ts file
  *
@@ -7,12 +12,9 @@ import { DynamicallyImportedFile, ConfigOptions } from '@mondo/mondo';
  * @returns Parsed configuration data
  */
 export function getSiteInternals(
-	config: DynamicallyImportedFile | undefined
+	config?: DynamicallyImportedFile | undefined
 ): ConfigOptions {
-	const parsedConfiguration = {
-		root: 'src',
-		port: 3000,
-	};
+	const parsedConfiguration = DEFAULT_MONDO_CONFIGURATION;
 
 	if (config) {
 		const configData = config[0]?.callback;
