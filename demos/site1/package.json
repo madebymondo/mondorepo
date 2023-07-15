@@ -1,0 +1,15 @@
+{
+    "name": "site1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "dev": "mondo dev"
+    },
+    "keywords": [],
+    "author": "",
+    "dependencies": {
+        "@mondo/mondo": "^0.0.1"
+    }
+}
