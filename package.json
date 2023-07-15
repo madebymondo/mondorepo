@@ -10,6 +10,7 @@
         "mondo:add": "pnpm -F @mondo/mondo add",
         "mondo:build": "pnpm -F @mondo/mondo build",
         "mondo:dev": "pnpm -F @mondo/mondo dev",
+        "mondo:test": "pnpm -F @mondo/mondo test",
         "demo:dev": "pnpm mondo:build && pnpm -F site1 dev"
     },
     "engines": {
