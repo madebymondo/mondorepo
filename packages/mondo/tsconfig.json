@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "outDir": "dist",
+        "types": ["node", "express", "./src/types/mondo.d.ts"],
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "strictNullChecks": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["./src/**/*.ts", "./__tests__/**/*.ts"],
+
+    "exclude": [],
+    "watchOptions": {
+        "watchFile": "useFsEvents",
+        "watchDirectory": "useFsEvents",
+        "fallbackPolling": "dynamicPriority",
+        "synchronousWatchDirectory": true,
+        "excludeDirectories": ["**/node_modules", "dist"]
+    }
+}
