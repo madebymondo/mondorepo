@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 import { Command } from 'commander';
 import { Mondo } from '@/lib/mondo.js';
 import { logGreen } from '@/utils/logger.js';
-import { compileAndRunTS } from './core.js';
+import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 
 const SITE_ROOT = process.cwd();
 
