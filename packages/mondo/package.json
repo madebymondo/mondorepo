@@ -10,6 +10,9 @@
     "bin": {
         "mondo": "./dist/cli.js"
     },
+    "exports": {
+        ".": "./dist/core.js"
+    },
     "files": [
         "./dist/core.js",
         "./dist/cli.js",
