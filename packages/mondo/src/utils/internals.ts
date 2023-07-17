@@ -39,10 +39,19 @@ export function getSiteInternals(
  * @param fallbackValue  Fallback value if the optimistic value doesn't exist
  * @returns
  */
-function setValueWithFallback(value, fallbackValue) {
+function setValueWithFallback(value: any, fallbackValue: any) {
 	if (value) {
 		return value;
 	}
 
 	return fallbackValue;
+}
+
+/**
+ * Wrapper used to get type checking for configuration options
+ *
+ * @param callback Callback funtion that returns config options
+ * */
+export function defineConfig(callback: () => ConfigOptions): ConfigOptions {
+	return callback();
 }
