@@ -1,8 +1,8 @@
-import { ConfigOptions } from '@mondo/mondo';
+import { defineConfig } from '@mondo/mondo';
 
-const config: ConfigOptions = {
-	root: '/src',
-	port: 8080,
-};
-
-export default config;
+export default defineConfig(() => {
+	return {
+		root: '/src',
+		port: 8000,
+	};
+});
