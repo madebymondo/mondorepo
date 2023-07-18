@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import fs from 'fs-extra';
+import fs from 'fs';
 
 /**
  * Compiles the contents of a TypeScript file into JavaScript
