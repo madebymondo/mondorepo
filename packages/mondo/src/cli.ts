@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import 'dotenv/config';
 import path from 'path';
-import fs from 'fs-extra';
 import { exec } from 'child_process';
 import { Command } from 'commander';
 import { Mondo } from '@/lib/mondo.js';
