@@ -3,7 +3,7 @@ import { ConfigOptions, DynamicallyImportedFile } from '@mondo/mondo';
 import {
 	getSiteInternals,
 	DEFAULT_MONDO_CONFIGURATION,
-} from '@/utils/internals';
+} from '@/utils/internals.js';
 
 const MOCK_CONFIGURATION_DATA: DynamicallyImportedFile = [
 	{
