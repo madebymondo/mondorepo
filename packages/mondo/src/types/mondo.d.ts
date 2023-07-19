@@ -32,4 +32,7 @@ declare module '@mondo/mondo' {
 
 	/** Response from dynamically importing a file */
 	type DynamicallyImportedFile = FileData[];
+
+	/** Dynamically imported file with a default export  */
+	type DefaultDynamicallyImportedFile = { default: any };
 }
