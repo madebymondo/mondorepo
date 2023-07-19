@@ -10,6 +10,7 @@ const config: Config = {
 		'^.+\\.{ts|tsx}?$': [
 			'ts-jest',
 			{
+				useESM: true,
 				tsconfig: {
 					importHelpers: true,
 				},
@@ -19,6 +20,7 @@ const config: Config = {
 	rootDir: '.',
 	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
 		prefix: '<rootDir>/',
+		useESM: true,
 	}),
 };
 
