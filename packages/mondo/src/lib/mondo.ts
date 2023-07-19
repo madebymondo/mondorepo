@@ -1,5 +1,5 @@
 import { getSiteInternals } from '@/utils/internals.js';
-import { runDevServer } from '@/dev/server.js';
+import { runDevServer } from '@/lib/dev.js';
 import { ConfigOptions, DynamicallyImportedFile } from '@mondo/mondo';
 
 interface MondoConstructor {
