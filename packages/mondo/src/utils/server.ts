@@ -21,7 +21,7 @@ export interface ConfigureAppInternalsResults {
  * */
 export function configureAppInternals(
 	options: ConfigOptions
-): ConfigureAppInternalsResults{
+): ConfigureAppInternalsResults {
 	const serverOptions = options?.server;
 
 	const rootDirectory = options?.root ?? path.join(process.cwd(), 'src');
