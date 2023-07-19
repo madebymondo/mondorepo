@@ -1,10 +1,10 @@
 import { getSiteInternals } from '@/utils/internals.js';
 import { runDevServer } from '@/lib/dev.js';
-import { ConfigOptions, DynamicallyImportedFile } from '@mondo/mondo';
+import { ConfigOptions, DefaultDynamicallyImportedFile } from '@mondo/mondo';
 
 interface MondoConstructor {
 	/** Dynamically imported mondo.config.ts file */
-	configData: DynamicallyImportedFile;
+	configData: DefaultDynamicallyImportedFile;
 }
 
 export class Mondo {
