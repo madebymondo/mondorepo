@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { compileAndRunTS } from '@/utils/compileAndRunTs';
 
 /**
  * Walks thorugh a directory and finds all available paths
@@ -15,4 +16,17 @@ export function* walkSync(dir: string) {
 			yield path.join(dir, file.name);
 		}
 	}
+}
+
+export interface ResolveRouteResults {
+	fileName: string;
+	data: any;
+}
+
+export async function resolveRoute(
+	routeFile: string
+): Promise<ResolveRouteResults> {
+	const fileData = await compileAndRunTS(routeFile);
+
+	return { fileName: '', data: fileData };
 }
