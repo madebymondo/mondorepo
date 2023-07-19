@@ -23,8 +23,8 @@ export interface ResolveRouteResults {
 	routeName?: string | undefined;
 	/** Whether this file generates more than one route ([slug]) */
 	isDynamicRoute: boolean;
-	/** Value that is used as a key in the data when generating dynamic pages */
-	dynamicRouteName?: string | undefined;
+	/** Values that are used as keys in the data when generating dynamic pages */
+	dynamicRouteParams?: string[] | undefined;
 	/** Main data sent to the server */
 	data: any;
 }
@@ -41,16 +41,15 @@ export async function resolveRoute(
 ): Promise<ResolveRouteResults> {
 	let isDynamicRoute: ResolveRouteResults['isDynamicRoute'] = false;
 	let routeName: ResolveRouteResults['routeName'] = undefined;
-	let dynamicRouteName: ResolveRouteResults['dynamicRouteName'] = undefined;
+	let dynamicRouteParams: ResolveRouteResults['dynamicRouteParams'] = undefined;
 
 	/** Dynamic routes start with '[' (example: [slug].ts) */
 	if (routeFile.includes('[')) {
 		isDynamicRoute = true;
-		/* Get the content between the [] and remove the file extension */
-		dynamicRouteName = routeFile
-			.replace('[', '')
-			.replace(']', '')
-			.replace('.ts', '');
+		/* Get the content between the [] */
+		dynamicRouteParams = [...routeFile.matchAll(/\[(.*?)\]/g)].map(
+			(route) => route[1]
+		);
 	} else {
 		/** If the route isn't dynamic just replace the file extension */
 		routeName = routeFile.replace('.ts', '');
@@ -58,5 +57,5 @@ export async function resolveRoute(
 
 	const data = await compileAndRunTS(routeFile);
 
-	return { routeName, isDynamicRoute, dynamicRouteName, data };
+	return { routeName, isDynamicRoute, dynamicRouteParams, data };
 }
