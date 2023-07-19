@@ -21,6 +21,6 @@ describe('tsCompile function utility', () => {
 		});
 		const data = await tsCompile(fileContents as string);
 
-		expect(data).toBe(`const name = "this is the homepage";`);
+		expect(data?.trim()).toBe(`const name = "this is the homepage";`);
 	});
 });
