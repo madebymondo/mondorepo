@@ -8,6 +8,7 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true,
         "paths": {
             "@/*": ["./src/*"],
             "@mocks/*": ["./__mocks__/*"]
