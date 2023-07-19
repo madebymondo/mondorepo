@@ -19,14 +19,44 @@ export function* walkSync(dir: string) {
 }
 
 export interface ResolveRouteResults {
-	fileName: string;
+	/** Route name if the page isn't dynamic */
+	routeName?: string | undefined;
+	/** Whether this file generates more than one route ([slug]) */
+	isDynamicRoute: boolean;
+	/** Value that is used as a key in the data when generating dynamic pages */
+	dynamicRouteName?: string | undefined;
+	/** Main data sent to the server */
 	data: any;
 }
 
+/**
+ * Compiles a typescript route file and returns
+ * a formatted object that can be used to generate
+ * routes.
+ *
+ * @param routeFile Route file path
+ */
 export async function resolveRoute(
 	routeFile: string
 ): Promise<ResolveRouteResults> {
-	const fileData = await compileAndRunTS(routeFile);
+	let isDynamicRoute: ResolveRouteResults['isDynamicRoute'] = false;
+	let routeName: ResolveRouteResults['routeName'] = undefined;
+	let dynamicRouteName: ResolveRouteResults['dynamicRouteName'] = undefined;
 
-	return { fileName: '', data: fileData };
+	/** Dynamic routes start with '[' (example: [slug].ts) */
+	if (routeFile.includes('[')) {
+		isDynamicRoute = true;
+		/* Get the content between the [] and remove the file extension */
+		dynamicRouteName = routeFile
+			.replace('[', '')
+			.replace(']', '')
+			.replace('.ts', '');
+	} else {
+		/** If the route isn't dynamic just replace the file extension */
+		routeName = routeFile.replace('.ts', '');
+	}
+
+	const data = await compileAndRunTS(routeFile);
+
+	return { routeName, isDynamicRoute, dynamicRouteName, data };
 }
