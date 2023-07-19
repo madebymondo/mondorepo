@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { compileAndRunTS } from '@/utils/compileAndRunTs';
+import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 
 /**
  * Walks thorugh a directory and finds all available paths
@@ -41,7 +41,8 @@ export async function resolveRoute(
 ): Promise<ResolveRouteResults> {
 	let isDynamicRoute: ResolveRouteResults['isDynamicRoute'] = false;
 	let routeName: ResolveRouteResults['routeName'] = undefined;
-	let dynamicRouteParams: ResolveRouteResults['dynamicRouteParams'] = undefined;
+	let dynamicRouteParams: ResolveRouteResults['dynamicRouteParams'] =
+		undefined;
 
 	/** Dynamic routes start with '[' (example: [slug].ts) */
 	if (routeFile.includes('[')) {
