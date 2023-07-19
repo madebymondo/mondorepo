@@ -1,4 +1,4 @@
-import { DynamicallyImportedFile, ConfigOptions } from '@mondo/mondo';
+import { ConfigOptions, DefaultDynamicallyImportedFile } from '@mondo/mondo';
 import path from 'path';
 
 const ROOT_PATH = path.join(process.cwd(), 'src');
@@ -23,12 +23,12 @@ export const DEFAULT_MONDO_CONFIGURATION: ConfigOptions = {
  * @returns Parsed configuration data
  */
 export function getSiteInternals(
-	config?: DynamicallyImportedFile | undefined
+	config?: DefaultDynamicallyImportedFile | undefined
 ): ConfigOptions {
 	let parsedConfiguration = DEFAULT_MONDO_CONFIGURATION;
 
 	if (config) {
-		const configData = config[0]?.callback;
+		const configData = config?.default;
 
 		/** Merge the config file content with the fallback and make sure
 		 * that the config file overrides the default.
