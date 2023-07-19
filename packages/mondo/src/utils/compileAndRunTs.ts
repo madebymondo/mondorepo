@@ -34,6 +34,7 @@ export async function tsCompile(
 			source,
 			options ?? {}
 		);
+
 		return compiledCode.code;
 	} catch (e) {
 		console.error('Error compiling typescript file', e);
@@ -43,17 +44,36 @@ export async function tsCompile(
 /**
  * Gets the content of a TypeScript file
  *
- * @param path Path of TypeScript file to compile
+ * @param filePath of TypeScript file to compile
  * @returns An object with the return value of each function in the file
  */
-export async function compileAndRunTS(path: string): Promise<any> {
-	const fileContents = fs.readFileSync(path, {
+export async function compileAndRunTS(filePath: string): Promise<any> {
+	const fileContents = fs.readFileSync(filePath, {
 		encoding: 'utf-8',
 	});
 
 	try {
 		const transpiledFile = await tsCompile(fileContents);
-		return transpiledFile;
+		let data = undefined;
+
+		try {
+			fs.writeFileSync(
+				filePath.replace('.ts', '.js'),
+				transpiledFile as string,
+				{ encoding: 'utf-8' }
+			);
+
+			data = await import(filePath.replace('.ts', '.js'));
+			fs.unlinkSync(filePath.replace('.ts', '.js'));
+			return data;
+		} catch (e) {
+			console.error(
+				`Error importing compiled typescript file: ${filePath}`,
+				e
+			);
+
+			fs.unlinkSync(filePath.replace('.ts', '.js'));
+		}
 	} catch (e) {
 		console.error(e);
 	}
