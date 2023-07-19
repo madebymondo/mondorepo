@@ -1,21 +1,20 @@
 import { vol, fs } from 'memfs';
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
-import { walkSync } from '@/utils/router';
+import { walkSync, resolveRoute, ResolveRouteResults } from '@/utils/router.js';
 
 jest.mock('fs');
 jest.mock('fs/promises');
 
 const pageJSON = {
-	'./index.ts': 'homepage',
+	'./index.ts': `const name = "this is the homepage";`,
 	'./projects/[project].ts': 'project page',
-	'./projects/index.ts': 'project homepage',
+	'./projects/index.ts': `const name = "this is the project homepage";`,
 };
 
 describe('Router performs as usual', () => {
 	beforeEach(() => {
 		vol.reset();
 		vol.fromJSON(pageJSON, '/pages');
-
 	});
 
 	it('walkSync works correctly', () => {
@@ -28,5 +27,14 @@ describe('Router performs as usual', () => {
 		}
 
 		expect(walkedRoutes).toStrictEqual(pageJSON);
+	});
+
+	it('resolveRoute should return the correct data to send to the server', async () => {
+		const compiledTS: ResolveRouteResults = await resolveRoute(
+			'/pages/projects/index.ts'
+		);
+
+		expect(compiledTS.data.trim()).toBe(pageJSON['./projects/index.ts']);
+		expect(compiledTS.fileName).toBe('projects');
 	});
 });
