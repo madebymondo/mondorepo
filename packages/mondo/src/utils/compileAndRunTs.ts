@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import esbuild, { TransformOptions, TransformResult } from 'esbuild';
 import fs from 'fs';
 
 /**
@@ -8,23 +8,36 @@ import fs from 'fs';
  * @param options TypeScript configuration options
  * @returns
  */
-export function tsCompile(
+export async function tsCompile(
 	source: string,
-	options: ts.TranspileOptions | null = null
-): string {
+	options: TransformOptions | null = null
+): Promise<string | undefined> {
 	// Default options -- you could also perform a merge, or use the project tsconfig.json
 	if (null === options) {
 		options = {
-			compilerOptions: {
-				//@ts-ignore
-				module: 'ESNext',
-				//@ts-ignore
-				moduleResolution: 'NodeNext',
-				esModuleInterop: true,
+			format: 'esm',
+			platform: 'node',
+			loader: 'ts',
+			tsconfigRaw: {
+				compilerOptions: {
+					//@ts-ignore
+					module: 'ESNext',
+					moduleResolution: 'NodeNext',
+					esModuleInterop: true,
+				},
 			},
 		};
 	}
-	return ts.default.transpileModule(source, options ?? {}).outputText;
+
+	try {
+		const compiledCode: TransformResult = await esbuild.transform(
+			source,
+			options ?? {}
+		);
+		return compiledCode.code;
+	} catch (e) {
+		console.error('Error compiling typescript file', e);
+	}
 }
 
 /**
@@ -38,31 +51,10 @@ export async function compileAndRunTS(path: string): Promise<any> {
 		encoding: 'utf-8',
 	});
 
-	const transpiledFile = tsCompile(fileContents);
-	const convertedJSPath = path.replace('.ts', '.js');
-
-	/* 
-  Write the compiled file contents to a temp .js file.
-  Import the file contents with top level await and 
-  return the values of each function in the file. 
-  */
 	try {
-		await fs.writeFile(convertedJSPath, transpiledFile);
-		const importedJSFile = await import(convertedJSPath);
-		const functionsToRun = Object.keys(importedJSFile).map(async (key) => {
-			return { key, callback: await importedJSFile[key] };
-		});
-
-		const content = await Promise.all(functionsToRun);
-
-		/* Remove the temp .js file after getting the content */
-		await fs.unlink(convertedJSPath);
-
-		return content;
+		const transpiledFile = await tsCompile(fileContents);
+		return transpiledFile;
 	} catch (e) {
 		console.error(e);
-
-		/* Remove the temp .js file if there's an error */
-		await fs.unlink(convertedJSPath);
 	}
 }
