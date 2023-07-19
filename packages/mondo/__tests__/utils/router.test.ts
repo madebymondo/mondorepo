@@ -31,10 +31,12 @@ describe('Router performs as usual', () => {
 
 	it('resolveRoute should return the correct data to send to the server', async () => {
 		const compiledTS: ResolveRouteResults = await resolveRoute(
-			'/pages/projects/index.ts'
+			'/pages/index.ts'
 		);
 
-		expect(compiledTS.data.trim()).toBe(pageJSON['./projects/index.ts']);
-		expect(compiledTS.fileName).toBe('projects');
+		expect(compiledTS.data.trim()).toBe(pageJSON['./index.ts']);
+		expect(compiledTS.routeName).toBe('/pages/index');
+		expect(compiledTS.isDynamicRoute).toBe(false);
+		expect(compiledTS.dynamicRouteName).toBe(undefined);
 	});
 });
