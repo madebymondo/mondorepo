@@ -52,29 +52,25 @@ export async function compileAndRunTS(filePath: string): Promise<any> {
 		encoding: 'utf-8',
 	});
 
+	const transpiledFile = await tsCompile(fileContents);
+	let data = undefined;
+
 	try {
-		const transpiledFile = await tsCompile(fileContents);
-		let data = undefined;
+		fs.writeFileSync(
+			filePath.replace('.ts', '.js'),
+			transpiledFile as string,
+			{ encoding: 'utf-8' }
+		);
 
-		try {
-			fs.writeFileSync(
-				filePath.replace('.ts', '.js'),
-				transpiledFile as string,
-				{ encoding: 'utf-8' }
-			);
-
-			data = await import(filePath.replace('.ts', '.js'));
-			fs.unlinkSync(filePath.replace('.ts', '.js'));
-			return data;
-		} catch (e) {
-			console.error(
-				`Error importing compiled typescript file: ${filePath}`,
-				e
-			);
-
-			fs.unlinkSync(filePath.replace('.ts', '.js'));
-		}
+		data = await import(filePath.replace('.ts', '.js'));
+		fs.unlinkSync(filePath.replace('.ts', '.js'));
+		return data;
 	} catch (e) {
-		console.error(e);
+		console.error(
+			`Error importing compiled typescript file: ${filePath}`,
+			e
+		);
+
+		fs.unlinkSync(filePath.replace('.ts', '.js'));
 	}
 }
