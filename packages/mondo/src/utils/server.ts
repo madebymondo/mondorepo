@@ -9,6 +9,7 @@ export interface ConfigureAppInternalsResults {
 	rootDirectory: string;
 	viewsDirectory: string;
 	globalDataDirectory: string;
+	pagesDirectory: string;
 	templateEngine: ConfigOptions['server']['templateEngine'];
 	staticFilesRoute: string;
 	staticFilesPath: string;
@@ -23,17 +24,18 @@ export function configureAppInternals(
 	options: ConfigOptions
 ): ConfigureAppInternalsResults {
 	const serverOptions = options?.server;
-
 	const rootDirectory = options?.root ?? path.join(process.cwd(), 'src');
-	const staticFilesRoute = serverOptions?.staticFilesRoute ?? '/public';
-	const staticFilesPath =
-		serverOptions?.staticFilesPath ?? path.join(process.cwd(), 'public');
 
+	const pagesDirectory =
+		options?.pagesDirectory ?? path.join(rootDirectory, 'pages');
 	const viewsDirectory =
 		options?.viewsDirectory ?? path.join(rootDirectory, 'views');
 	const globalDataDirectory =
 		options?.globalDataDirectory ?? path.join(rootDirectory, 'views');
 
+	const staticFilesRoute = serverOptions?.staticFilesRoute ?? '/public';
+	const staticFilesPath =
+		serverOptions?.staticFilesPath ?? path.join(process.cwd(), 'public');
 	const templateEngine = serverOptions?.templateEngine ?? 'njk';
 
 	const port = serverOptions?.port ?? 3000;
@@ -41,6 +43,7 @@ export function configureAppInternals(
 	return {
 		rootDirectory,
 		globalDataDirectory,
+		pagesDirectory,
 		viewsDirectory,
 		templateEngine,
 		staticFilesRoute,
