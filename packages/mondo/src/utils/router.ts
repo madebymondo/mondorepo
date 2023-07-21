@@ -29,6 +29,13 @@ export interface ResolveRouteResults {
 	data: any;
 }
 
+export interface ResolveRouteParams {
+	/** Path to the route file */
+	routeFile: string;
+	/** Pages directory from config */
+	pagesDirectory: string;
+}
+
 /**
  * Compiles a typescript route file and returns
  * a formatted object that can be used to generate
@@ -37,12 +44,24 @@ export interface ResolveRouteResults {
  * @param routeFile Route file path
  */
 export async function resolveRoute(
-	routeFile: string
+	params: ResolveRouteParams
 ): Promise<ResolveRouteResults> {
+	if (!params.routeFile) {
+		throw new Error('No path found for the route file.');
+	}
+
+	if (!params.pagesDirectory) {
+		throw new Error('No value found for the pagesDirectory');
+	}
+
+	const { routeFile, pagesDirectory } = params;
+
 	let isDynamicRoute: ResolveRouteResults['isDynamicRoute'] = false;
 	let routeName: ResolveRouteResults['routeName'] = undefined;
 	let dynamicRouteParams: ResolveRouteResults['dynamicRouteParams'] =
 		undefined;
+
+	routeName = routeFile.replace('.ts', '').replace(pagesDirectory, '');
 
 	/** Dynamic routes start with '[' (example: [slug].ts) */
 	if (routeFile.includes('[')) {
@@ -51,9 +70,6 @@ export async function resolveRoute(
 		dynamicRouteParams = [...routeFile.matchAll(/\[(.*?)\]/g)].map(
 			(route) => route[1]
 		);
-	} else {
-		/** If the route isn't dynamic just replace the file extension */
-		routeName = routeFile.replace('.ts', '');
 	}
 
 	const data = await compileAndRunTS(routeFile);
