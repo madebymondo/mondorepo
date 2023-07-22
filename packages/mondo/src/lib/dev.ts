@@ -70,16 +70,17 @@ export async function runDevServer(options: RunDevServerOptions) {
 			async (req: Request, res: Response, next: NextFunction) => {
 				const pageData = await data.createPage(req);
 
-				const outputHTML = await engine._renderTemplate(
-					pageData.template,
-					pageData
-				);
-
-				/* Send to 404 if there is no data sent to template */
 				if (pageData) {
+					const outputHTML = await engine._renderTemplate(
+						pageData?.template,
+						pageData
+					);
+
 					res.setHeader('Content-Type', 'text/html');
 					res.send(outputHTML);
 				} else {
+					/* Send to 404 if there is no data sent to template */
+					res.status(404);
 					next();
 				}
 			}
