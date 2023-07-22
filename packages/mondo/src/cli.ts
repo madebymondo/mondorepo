@@ -17,9 +17,6 @@ const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
 
 const { server, watchTargets, root } = CONFIG_FILE_DATA;
 
-/** Initialize a new Mondo site */
-// const SITE = new Mondo({ configData: CONFIG_FILE_DATA });
-
 /** CLI Initialization */
 const program = new Command();
 
