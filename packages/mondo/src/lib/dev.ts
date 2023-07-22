@@ -58,9 +58,15 @@ export async function runDevServer(options: RunDevServerOptions) {
 			);
 		}
 
+		/**
+		 *  Handles nested slugs like /pages/nested-page/test
+		 * also make sure the '/' doesn't act like a catch-all
+		 * for every root-level route.
+		 * */
+		const getPath = routeName === '/' ? routeName : `${routeName}(*)?`;
+
 		app.get(
-			/* Handles nested slugs like /pages/nested-page/test */
-			`${routeName}(*)?`,
+			getPath,
 			async (req: Request, res: Response, next: NextFunction) => {
 				const pageData = await data.createPage(req);
 
