@@ -20,7 +20,7 @@ export function* walkSync(dir: string) {
 
 export interface ResolveRouteResults {
 	/** Route name if the page isn't dynamic */
-	routeName?: string | undefined;
+	routeName: string;
 	/** Whether this file generates more than one route ([slug]) */
 	isDynamicRoute: boolean;
 	/** Values that are used as keys in the data when generating dynamic pages */
@@ -57,11 +57,20 @@ export async function resolveRoute(
 	const { routeFile, pagesDirectory } = params;
 
 	let isDynamicRoute: ResolveRouteResults['isDynamicRoute'] = false;
-	let routeName: ResolveRouteResults['routeName'] = undefined;
 	let dynamicRouteParams: ResolveRouteResults['dynamicRouteParams'] =
 		undefined;
 
-	routeName = routeFile.replace('.ts', '').replace(pagesDirectory, '');
+	/** Format the route to match express params
+	 *
+	 * /pages/[page].ts to /pages/:page
+	 */
+	const routeName: ResolveRouteResults['routeName'] = routeFile
+		.replace('.ts', '')
+		.replace(pagesDirectory, '')
+		.replace('[', ':')
+		.replace(']', '')
+		// Edge case to handle any root index files in a route directory
+		.replace('index', '');
 
 	/** Dynamic routes start with '[' (example: [slug].ts) */
 	if (routeFile.includes('[')) {
