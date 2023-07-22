@@ -1,8 +1,19 @@
-import { DynamicallyImportedFile, ConfigOptions } from '@mondo/mondo';
+import { ConfigOptions, DefaultDynamicallyImportedFile } from '@mondo/mondo';
+import path from 'path';
+
+const ROOT_PATH = path.join(process.cwd(), 'src');
 
 export const DEFAULT_MONDO_CONFIGURATION: ConfigOptions = {
-	root: 'src',
-	port: 3000,
+	root: ROOT_PATH,
+	pagesDirectory: path.join(ROOT_PATH, 'pages'),
+	viewsDirectory: path.join(ROOT_PATH, 'views'),
+	globalDataDirectory: path.join(ROOT_PATH, 'data'),
+	server: {
+		port: 3000,
+		templateEngine: 'njk',
+		staticFilesPath: path.join(ROOT_PATH, 'public'),
+		staticFilesRoute: '/public',
+	},
 };
 
 /**
@@ -12,37 +23,27 @@ export const DEFAULT_MONDO_CONFIGURATION: ConfigOptions = {
  * @returns Parsed configuration data
  */
 export function getSiteInternals(
-	config?: DynamicallyImportedFile | undefined
+	config?: DefaultDynamicallyImportedFile | undefined
 ): ConfigOptions {
-	const parsedConfiguration = DEFAULT_MONDO_CONFIGURATION;
+	let parsedConfiguration = DEFAULT_MONDO_CONFIGURATION;
 
 	if (config) {
-		const configData = config[0]?.callback;
+		const configData = config?.default;
 
-		parsedConfiguration['root'] = setValueWithFallback(
-			configData?.root,
-			parsedConfiguration['root']
-		);
-		parsedConfiguration['port'] = setValueWithFallback(
-			configData?.port,
-			parsedConfiguration['port']
-		);
+		/** Merge the config file content with the fallback and make sure
+		 * that the config file overrides the default.
+		 */
+		parsedConfiguration = { ...DEFAULT_MONDO_CONFIGURATION, ...configData };
 	}
 
 	return parsedConfiguration;
 }
 
 /**
- * Checks if a certain value exists. If not it returns a fallback value
+ * Wrapper used to get type checking for configuration options
  *
- * @param value Optimistic value
- * @param fallbackValue  Fallback value if the optimistic value doesn't exist
- * @returns
- */
-function setValueWithFallback(value, fallbackValue) {
-	if (value) {
-		return value;
-	}
-
-	return fallbackValue;
+ * @param callback Callback funtion that returns config options
+ * */
+export function defineConfig(callback: () => ConfigOptions): ConfigOptions {
+	return callback();
 }

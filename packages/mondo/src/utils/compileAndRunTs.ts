@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
-import fs from 'fs-extra';
+import esbuild, { TransformOptions, TransformResult } from 'esbuild';
+import fs from 'fs';
 
 /**
  * Compiles the contents of a TypeScript file into JavaScript
@@ -8,61 +8,69 @@ import fs from 'fs-extra';
  * @param options TypeScript configuration options
  * @returns
  */
-export function tsCompile(
+export async function tsCompile(
 	source: string,
-	options: ts.TranspileOptions | null = null
-): string {
+	options: TransformOptions | null = null
+): Promise<string | undefined> {
 	// Default options -- you could also perform a merge, or use the project tsconfig.json
 	if (null === options) {
 		options = {
-			compilerOptions: {
-				//@ts-ignore
-				module: 'ESNext',
-				//@ts-ignore
-				moduleResolution: 'NodeNext',
-				esModuleInterop: true,
+			format: 'esm',
+			platform: 'node',
+			loader: 'ts',
+			tsconfigRaw: {
+				compilerOptions: {
+					//@ts-ignore
+					module: 'ESNext',
+					moduleResolution: 'NodeNext',
+					esModuleInterop: true,
+				},
 			},
 		};
 	}
-	return ts.default.transpileModule(source, options ?? {}).outputText;
+
+	try {
+		const compiledCode: TransformResult = await esbuild.transform(
+			source,
+			options ?? {}
+		);
+
+		return compiledCode.code;
+	} catch (e) {
+		console.error('Error compiling typescript file', e);
+	}
 }
 
 /**
  * Gets the content of a TypeScript file
  *
- * @param path Path of TypeScript file to compile
+ * @param filePath of TypeScript file to compile
  * @returns An object with the return value of each function in the file
  */
-export async function compileAndRunTS(path: string): Promise<any> {
-	const fileContents = fs.readFileSync(path, {
+export async function compileAndRunTS(filePath: string): Promise<any> {
+	const fileContents = fs.readFileSync(filePath, {
 		encoding: 'utf-8',
 	});
 
-	const transpiledFile = tsCompile(fileContents);
-	const convertedJSPath = path.replace('.ts', '.js');
+	const transpiledFile = await tsCompile(fileContents);
+	let data = undefined;
 
-	/* 
-  Write the compiled file contents to a temp .js file.
-  Import the file contents with top level await and 
-  return the values of each function in the file. 
-  */
 	try {
-		await fs.writeFile(convertedJSPath, transpiledFile);
-		const importedJSFile = await import(convertedJSPath);
-		const functionsToRun = Object.keys(importedJSFile).map(async (key) => {
-			return { key, callback: await importedJSFile[key] };
-		});
+		fs.writeFileSync(
+			filePath.replace('.ts', '.js'),
+			transpiledFile as string,
+			{ encoding: 'utf-8' }
+		);
 
-		const content = await Promise.all(functionsToRun);
-
-		/* Remove the temp .js file after getting the content */
-		await fs.unlink(convertedJSPath);
-
-		return content;
+		data = await import(filePath.replace('.ts', '.js'));
+		fs.unlinkSync(filePath.replace('.ts', '.js'));
+		return data;
 	} catch (e) {
-		console.error(e);
+		console.error(
+			`Error importing compiled typescript file: ${filePath}`,
+			e
+		);
 
-		/* Remove the temp .js file if there's an error */
-		await fs.unlink(convertedJSPath);
+		fs.unlinkSync(filePath.replace('.ts', '.js'));
 	}
 }

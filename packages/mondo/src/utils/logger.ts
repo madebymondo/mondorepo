@@ -17,7 +17,8 @@ export function logGreen(message: string) {
  * @returns Red console.log message
  */
 export function logRed(message: string) {
-	return console.log(chalk.red(message));
+	/* Don't return console.log since most times this will be run in an Error */
+	return chalk.red(message);
 }
 
 /**

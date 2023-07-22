@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 import 'dotenv/config';
 import path from 'path';
-import fs from 'fs-extra';
 import { exec } from 'child_process';
 import { Command } from 'commander';
 import { Mondo } from '@/lib/mondo.js';
 import { logGreen } from '@/utils/logger.js';
-import { compileAndRunTS } from './core.js';
+import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 
 const SITE_ROOT = process.cwd();
 
@@ -22,7 +21,7 @@ const program = new Command();
 
 program
 	.command('dev')
-	.description('Starts development server for the Bean site')
+	.description('Starts development server for the Mondo site')
 	.action(async () => {
 		logGreen('Starting development server...');
 		await SITE.runDev();

@@ -1,4 +1,4 @@
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
-import { logGreen } from '@/utils/logger.js';
+import { defineConfig } from '@/utils/internals.js';
+import { logGreen, logYellow, logRed } from '@/utils/logger.js';
 
-export { compileAndRunTS, logGreen };
+export { defineConfig, logGreen, logYellow, logRed };
