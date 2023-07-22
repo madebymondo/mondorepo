@@ -79,6 +79,12 @@ importers:
         specifier: ^0.0.1
         version: link:../../packages/mondo
 
+  examples/simple-static:
+    dependencies:
+      '@mondo/mondo':
+        specifier: ^0.0.1
+        version: link:../../packages/mondo
+
   packages/mondo:
     dependencies:
       '@types/nunjucks':
