@@ -15,6 +15,10 @@ export async function createPage(ctx) {
 
 	const pageData = pages.find((page) => page.slug === slug);
 
+	if (!pageData) {
+		return;
+	}
+
 	return {
 		template: 'base.njk',
 		title: pageData?.title,
