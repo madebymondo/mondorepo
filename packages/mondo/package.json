@@ -20,30 +20,36 @@
         "./README.md"
     ],
     "scripts": {
-        "test": "jest",
+        "test": "npx jest",
         "build": "rm -rf dist && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
         "launch": "npm run test && npm run build",
         "dev": "tsc --project tsconfig.build.json && (concurrently \"tsc --project tsconfig.build.json  -w\" \"tsc-alias --project tsconfig.build.json -w\")",
         "pack": "npm pack --dry-run"
     },
+    "engines": {
+        "node": ">=18.16.0"
+    },
     "dependencies": {
+        "@types/nunjucks": "^3.2.3",
         "chalk": "*",
         "commander": "*",
         "dotenv": "*",
+        "esbuild": "*",
         "express": "^4.18.2",
         "fs-extra": "*",
-        "esbuild": "*"
-
+        "nunjucks": "^3.2.4"
     },
     "devDependencies": {
+        "@babel/preset-env": "*",
+        "@babel/preset-typescript": "*",
         "@types/express": "^4.17.17",
         "@types/fs-extra": "^11.0.1",
         "@types/jest": "*",
+        "babel-plugin-dynamic-import-node": "*",
         "jest": "*",
-        "ts-jest": "*",
-        "ts-node": "*",
-        "tsc-alias": "^1.8.7",
         "memfs": "*",
+        "ts-jest": "*",
+        "tsc-alias": "^1.8.7",
         "typescript": "*"
     }
 }
