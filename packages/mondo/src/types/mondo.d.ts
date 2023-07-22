@@ -11,6 +11,8 @@ declare module '@mondo/mondo' {
 		/** Directory where global data files passed to all routes are store. Defaults to "src/data" (relative to root) */
 		globalDataDirectory?: string;
 		server: ServerOptions;
+		/** Live-reload targets to watch for */
+		watchTargets?: string[];
 	}
 
 	/** Configuration options passed to the server */
@@ -23,6 +25,8 @@ declare module '@mondo/mondo' {
 		staticFilesRoute?: string;
 		/** Port for development and production server mode */
 		port?: number;
+		/** Watch targtes for nodemon relative to root  */
+		serverWatchTargets?: string[];
 	}
 
 	/** Object in a dynamically imported file */
