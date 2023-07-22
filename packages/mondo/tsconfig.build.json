@@ -14,7 +14,7 @@
             "@/*": ["./src/*"]
         }
     },
-    "include": ["./src/core.ts", "./src/cli.ts"],
+    "include": ["./src/core.ts", "./src/cli.ts", "./src/dev/app.ts"],
     "exclude": [],
     "watchOptions": {
         "watchFile": "useFsEvents",
