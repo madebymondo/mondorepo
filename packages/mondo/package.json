@@ -46,6 +46,7 @@
         "@types/fs-extra": "^11.0.1",
         "@types/jest": "*",
         "babel-plugin-dynamic-import-node": "*",
+        "browser-sync": "^2.29.3",
         "jest": "*",
         "memfs": "*",
         "ts-jest": "*",
