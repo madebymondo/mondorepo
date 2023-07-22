@@ -73,12 +73,6 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
 
-  demos/site1:
-    dependencies:
-      '@mondo/mondo':
-        specifier: ^0.0.1
-        version: link:../../packages/mondo
-
   examples/simple-static:
     dependencies:
       '@mondo/mondo':
