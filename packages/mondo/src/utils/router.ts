@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
+import { logRed } from '@/utils/logger.js';
 
 /**
  * Walks thorugh a directory and finds all available paths
@@ -84,4 +85,50 @@ export async function resolveRoute(
 	const data = await compileAndRunTS(routeFile);
 
 	return { routeName, isDynamicRoute, dynamicRouteParams, data };
+}
+
+/**
+ * Takes a path from the pages directory makes sure that the
+ * routes are in an order that won't causing colliding with other
+ * catch-all routes.
+ *
+ * @param routeDirectoryPath Path to a directory
+ * @returns An array of routes that prioritize static and dynamic routes with
+ * more depth
+ */
+export function generateMergedRoutes(routeDirectoryPath: string) {
+	if (!routeDirectoryPath) {
+		throw new Error(logRed(`No routeDirectory path is specified`));
+	}
+	const availableRoutes = [...walkSync(routeDirectoryPath)]
+		/* Sort routes so that routes with a larger depth don't get caught
+		in potential catch-all routes
+		*/
+		.sort((a, b) => {
+			const firstRouteDepth = a.split('/').length;
+			const secondRouteDepth = b.split('/').length;
+
+			return secondRouteDepth - firstRouteDepth;
+		});
+
+	/**
+	 * Break the routes up into static routes (/pages/index.ts)
+	 * and dynamic routes (/pages/[page].ts). This way there
+	 * is no chance for a dynamic route to override a static one
+	 */
+	const staticRoutes = availableRoutes.filter(
+		(route) => !route.includes('[')
+	);
+
+	const dynamicRoutes = availableRoutes.filter((route) =>
+		route.includes('[')
+	);
+
+	/**
+	 * Merge the static and dyanmic routes together, but have
+	 * the static routes take priority.
+	 */
+	const mergedRoutes = [...staticRoutes, ...dynamicRoutes];
+
+	return mergedRoutes;
 }
