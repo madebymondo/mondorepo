@@ -1,4 +1,5 @@
 declare module '@mondo/mondo' {
+	import { RequestHandler } from 'express';
 	/** Options that can be passed to the mondo.config.ts file */
 	interface ConfigOptions {
 		/** Project root directory path. Defaults to "src" */
@@ -35,4 +36,13 @@ declare module '@mondo/mondo' {
 
 	/** Dynamically imported file with a default export  */
 	type DefaultDynamicallyImportedFile = { default: any };
+
+	interface CreatePage {
+		template: string;
+		[key: string]: any;
+	}
+
+	interface CreatePageContext extends RequestHandler {
+		[key: string]: any;
+	}
 }
