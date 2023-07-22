@@ -38,12 +38,3 @@ export function getSiteInternals(
 
 	return parsedConfiguration;
 }
-
-/**
- * Wrapper used to get type checking for configuration options
- *
- * @param callback Callback funtion that returns config options
- * */
-export function defineConfig(callback: () => ConfigOptions): ConfigOptions {
-	return callback();
-}
