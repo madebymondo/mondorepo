@@ -1,7 +1,7 @@
 import { ConfigOptions } from '@mondo/mondo';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { logGreen, logRed } from '@/utils/logger.js';
-import { walkSync, resolveRoute } from '@/utils/router.js';
+import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
 import { TemplateEngine } from '@/utils/templates.js';
 import {
 	configureAppInternals,
@@ -12,6 +12,9 @@ export interface RunDevServerOptions {
 	internals: ConfigOptions;
 }
 
+/**
+ * Initializes and runs an Express app for the dev server
+ */
 export async function runDevServer(options: RunDevServerOptions) {
 	const app: Express = express();
 
@@ -25,7 +28,9 @@ export async function runDevServer(options: RunDevServerOptions) {
 		port,
 	} = configureAppInternals(options.internals);
 
-	const availableRoutes = walkSync(pagesDirectory);
+	/* Make sure static routes and dynamic routes with more depth
+	are prioritized */
+	const mergedRoutes = generateMergedRoutes(pagesDirectory);
 
 	/* Set global data for app */
 	initialzeGlobalDataMiddleware({ app, globalDataDirectory });
@@ -39,7 +44,7 @@ export async function runDevServer(options: RunDevServerOptions) {
 		app,
 	});
 
-	for (const route of availableRoutes) {
+	for (const route of mergedRoutes) {
 		const routeResponse = await resolveRoute({
 			routeFile: route,
 			pagesDirectory,
