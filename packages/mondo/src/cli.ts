@@ -8,6 +8,7 @@ import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import bs from 'browser-sync';
 import { getSiteInternals } from '@/utils/internals.js';
 import { buildStaticSite } from '@/builder/static.js';
+import { generateServerBundle } from './builder/server.js';
 
 const SITE_ROOT = process.cwd();
 
@@ -91,20 +92,10 @@ program
 		switch (renderMode) {
 			case 'server':
 				logBlue(
-					`The renderMode has been set to 'server'. Generating the pre-rendered server files...`
+					`The renderMode has been set to 'server'. Generating server build...`
 				);
 
-				/**
-				 *  Pre-prendered HTML files will be built and live in
-				 * the 'build/html' directory.
-				 */
-				CONFIG_FILE_DATA['buildDirectory'] = path.join(
-					CONFIG_FILE_DATA['buildDirectory'] as string,
-					'html'
-				);
-
-				/** Generate HTML files for pre-rendered routes  */
-				buildStaticSite(CONFIG_FILE_DATA);
+				await generateServerBundle(CONFIG_FILE_DATA);
 				break;
 			default:
 				logBlue(
