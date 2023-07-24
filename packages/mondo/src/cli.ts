@@ -7,6 +7,7 @@ import { logGreen, logBlue } from '@/utils/logger.js';
 import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import bs from 'browser-sync';
 import { getSiteInternals } from '@/utils/internals.js';
+import { buildStaticSite } from '@/builder/static.js';
 
 const SITE_ROOT = process.cwd();
 
@@ -15,7 +16,7 @@ const configPath = path.join(SITE_ROOT, 'mondo.config.ts');
 const importedConfigFile = await compileAndRunTS(configPath);
 const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
 
-const { server, watchTargets, root } = CONFIG_FILE_DATA;
+const { server, watchTargets, root, renderMode } = CONFIG_FILE_DATA;
 
 /** CLI Initialization */
 const program = new Command();
@@ -80,6 +81,26 @@ program
 		serverProcess.on('exit', (code) => {
 			logBlue(`[Server Exit]: ${code?.toString()}`);
 		});
+	});
+
+program
+	.command('build')
+	.description('Generates Mondo site output')
+	.action(async () => {
+		/** Handle site building for different render modes  */
+		switch (renderMode) {
+			case 'server':
+				logBlue(
+					`The renderMode has been set to 'server'. Generating the server files...`
+				);
+				break;
+			// TODO: Implement server output
+			default:
+				logBlue(
+					`The renderMode has been set to 'ssg'. Generating the static build...`
+				);
+				buildStaticSite(CONFIG_FILE_DATA);
+		}
 	});
 
 program.parse();
