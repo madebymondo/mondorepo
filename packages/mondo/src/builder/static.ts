@@ -8,7 +8,9 @@ import path from 'path';
 import fs from 'fs';
 
 /**
- * Gets all the global data and creates a single object that can be used in the templates
+ * Gets all the global data and creates a single object that can be used in the templates.
+ * It handles the generation of static HTML files for the 'ssg' render mode and 'server' routes
+ * that are set to be prerendered.
  *
  * @param globalDataDirectory Path to the globalDataDirectory set in config. Defaults to 'src/data'
  * @returns An object of global data values to send to the template
@@ -65,6 +67,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 	const buildDirectory = options.buildDirectory as string;
 	const globalDataDirectory = options.globalDataDirectory as string;
 	const templateEngine = options.server.templateEngine;
+	const renderMode = options.renderMode as string;
 
 	const mergedRoutes = generateMergedRoutes(pagesDirectory);
 
@@ -93,10 +96,12 @@ export async function buildStaticSite(options: ConfigOptions) {
 
 		/** Make sure that all dynamic routes have a createPaths function */
 		if (route.isDynamicRoute) {
-			if (!data.createPaths) {
+			if (!data.createPaths && renderMode === 'ssg') {
 				throw new Error(
 					logRed(
-						`Failed generating dynamic static route ${route.routeName}. No createPaths function found`
+						`Failed generating dynamic route ${route.routeName}. The 'createPaths' function is 
+						required for any route that does not include 'prerender: true' or is using the server
+						render mode`
 					)
 				);
 			}
@@ -138,31 +143,45 @@ export async function buildStaticSite(options: ConfigOptions) {
 					dynamicRouteContext
 				);
 
-				const compiledDynamicRouteHTML = await engine._renderTemplate(
-					createdDynamicRoute.template,
-					{ ...globalData, ...createdDynamicRoute },
-					'build'
-				);
+				/**
+				 * Generate the dynamic route if it should be prerendered
+				 * or is using ssg as the renderMode
+				 */
 
-				outputFile(dynamicRouteBuildPath, compiledDynamicRouteHTML);
+				if (createdDynamicRoute.prerender || renderMode === 'ssg') {
+					const compiledDynamicRouteHTML =
+						await engine._renderTemplate(
+							createdDynamicRoute.template,
+							{ ...globalData, ...createdDynamicRoute },
+							'build'
+						);
+
+					outputFile(dynamicRouteBuildPath, compiledDynamicRouteHTML);
+				}
 			}
 		} else {
 			/** Get data passed to template  */
 			const createdPage = await data.createPage();
 
-			/**  Get the generated HTML and build path */
-			const compiledStaticRouteHTML = await engine._renderTemplate(
-				createdPage.template,
-				{ ...globalData, ...createdPage },
-				'build'
-			);
-			const staticRouteBuildPath = path.join(
-				buildDirectory,
-				routeName,
-				'/index.html'
-			);
+			/**
+			 * Generate the static file if it should be prerendered
+			 * or is using ssg as the renderMode
+			 */
+			if (createdPage.prerender || renderMode === 'ssg') {
+				/**  Get the generated HTML and build path */
+				const compiledStaticRouteHTML = await engine._renderTemplate(
+					createdPage.template,
+					{ ...globalData, ...createdPage },
+					'build'
+				);
+				const staticRouteBuildPath = path.join(
+					buildDirectory,
+					routeName,
+					'/index.html'
+				);
 
-			outputFile(staticRouteBuildPath, compiledStaticRouteHTML);
+				outputFile(staticRouteBuildPath, compiledStaticRouteHTML);
+			}
 		}
 	}
 }
