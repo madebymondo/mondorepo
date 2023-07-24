@@ -11,7 +11,8 @@
         "mondo:build": "pnpm -F @mondo/mondo build",
         "mondo:dev": "pnpm -F @mondo/mondo dev",
         "mondo:test": "pnpm -F @mondo/mondo test",
-        "demo:dev": "pnpm mondo:build && pnpm -F simple-static dev"
+        "demo:dev": "pnpm mondo:build && pnpm -F simple-static dev",
+        "demo:build": "pnpm mondo:build && pnpm -F simple-static build"
     },
     "engines": {
         "node": ">=16.12.0",
