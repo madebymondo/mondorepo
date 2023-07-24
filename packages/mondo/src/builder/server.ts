@@ -6,6 +6,7 @@ import { generateMergedRoutes, walkSync } from '@/utils/router.js';
 import { compileAndRunTS, tsCompile } from '@/utils/compileAndRunTs.js';
 import { logBlue } from '@/utils/logger.js';
 import { buildStaticSite } from '@/builder/static.js';
+import { getSiteInternals } from '@/utils/internals.js';
 
 export async function generateServerBundle(options: ConfigOptions) {
 	/** Generate as compiled manifest of all route data */
@@ -18,10 +19,11 @@ export async function generateServerBundle(options: ConfigOptions) {
 	logBlue(`Compiling Mondo config file...`);
 	/** Compile config file and output to build */
 	const configPath = path.join(process.cwd(), 'mondo.config.ts');
-	const compiledConfigFile = await compileAndRunTS(configPath);
+	const importedConfigFile = await compileAndRunTS(configPath);
+	const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
 	outputFile(
 		`${buildDirectory}/config.json`,
-		JSON.stringify(compiledConfigFile.default)
+		JSON.stringify(CONFIG_FILE_DATA)
 	);
 
 	logBlue(`Building server route files...`);
