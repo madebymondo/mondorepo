@@ -105,4 +105,25 @@ program
 		}
 	});
 
+program
+	.command('start')
+	.description('Start Mondo production server')
+	.action(() => {
+		const serverProcess = exec('node build/app.js');
+		/**
+		 * Log server processes fon updates
+		 */
+		serverProcess.stdout?.on('data', (data) => {
+			logBlue(`[Server Process]: ${data.toString()}`);
+		});
+
+		serverProcess.stderr?.on('data', (data) => {
+			logBlue(`[Server Error]: ${data.toString()}`);
+		});
+
+		serverProcess.on('exit', (code) => {
+			logBlue(`[Server Exit]: ${code?.toString()}`);
+		});
+	});
+
 program.parse();
