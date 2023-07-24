@@ -5,11 +5,13 @@
     "type": "module",
     "scripts": {
         "dev": "mondo dev",
-        "build": "rm -rf ./build && mondo build"
+        "build": "rm -rf ./build && mondo build",
+        "start": "npm run build && mondo start"
     },
     "keywords": [],
     "author": "",
     "dependencies": {
-        "@mondo/mondo": "^0.0.1"
+        "@mondo/mondo": "^0.0.1",
+        "express": "^4.18.2"
     }
 }
