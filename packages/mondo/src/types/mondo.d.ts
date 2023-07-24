@@ -4,6 +4,10 @@ declare module '@mondo/mondo' {
 	interface ConfigOptions {
 		/** Project root directory path. Defaults to "src" */
 		root?: string;
+		/** Method to use when generating site output. Defaults to 'ssg' */
+		renderMode?: 'ssg' | 'server';
+		/** Directory to write build output to. Defaults to 'build' */
+		buildDirectory?: string;
 		/** Directory where routes are stored. Defaults to "src/pages" (relative to root) */
 		pagesDirectory?: string;
 		/** Directory where template-related files are stored. Defaults to "src/views" (relative to root) */
