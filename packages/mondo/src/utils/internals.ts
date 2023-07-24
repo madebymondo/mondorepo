@@ -1,5 +1,6 @@
 import { ConfigOptions, DefaultDynamicallyImportedFile } from '@mondo/mondo';
 import path from 'path';
+import { mergeDeep } from '@/utils/helpers.js';
 
 const ROOT_PATH = path.join(process.cwd(), 'src');
 
@@ -35,7 +36,10 @@ export function getSiteInternals(
 		/** Merge the config file content with the fallback and make sure
 		 * that the config file overrides the default.
 		 */
-		parsedConfiguration = { ...DEFAULT_MONDO_CONFIGURATION, ...configData };
+		parsedConfiguration = mergeDeep(
+			DEFAULT_MONDO_CONFIGURATION,
+			configData
+		);
 	}
 
 	return parsedConfiguration;

@@ -6,6 +6,7 @@ import { TemplateEngine } from '@/utils/templates.js';
 import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import path from 'path';
 import fs from 'fs';
+import { mergeDeep } from '@/utils/helpers.js';
 
 /**
  * Gets all the global data and creates a single object that can be used in the templates.
@@ -149,7 +150,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 					const compiledDynamicRouteHTML =
 						await engine._renderTemplate(
 							createdDynamicRoute.template,
-							{ ...globalData, ...createdDynamicRoute },
+							mergeDeep(globalData, createdDynamicRoute),
 							'build'
 						);
 
@@ -168,7 +169,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 				/**  Get the generated HTML and build path */
 				const compiledStaticRouteHTML = await engine._renderTemplate(
 					createdPage.template,
-					{ ...globalData, ...createdPage },
+					mergeDeep(globalData, createdPage),
 					'build'
 				);
 				const staticRouteBuildPath = path.join(

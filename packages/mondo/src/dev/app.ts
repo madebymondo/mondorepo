@@ -9,6 +9,7 @@ import {
 	configureAppInternals,
 	initialzeGlobalDataMiddleware,
 } from '@/utils/server.js';
+import { mergeDeep } from '@/utils/helpers.js';
 
 /**
  * Initializes and runs an Express app for the dev server
@@ -77,7 +78,7 @@ for (const route of mergedRoutes) {
 				const outputHTML = await engine._renderTemplate(
 					pageData?.template,
 					/** Pass a combined object of page and global data */
-					{ ...pageData, ...app.locals }
+					mergeDeep(pageData, app.locals)
 				);
 
 				res.setHeader('Content-Type', 'text/html');
