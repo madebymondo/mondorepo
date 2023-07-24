@@ -1,5 +1,4 @@
 import path from 'path';
-import { ConfigOptions } from '@mondo/mondo';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { logGreen, logRed } from '@/utils/logger.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
@@ -10,10 +9,7 @@ import {
 	configureAppInternals,
 	initialzeGlobalDataMiddleware,
 } from '@/utils/server.js';
-
-export interface RunDevServerOptions {
-	internals: ConfigOptions;
-}
+import { mergeDeep } from '@/utils/helpers.js';
 
 /**
  * Initializes and runs an Express app for the dev server
@@ -82,7 +78,7 @@ for (const route of mergedRoutes) {
 				const outputHTML = await engine._renderTemplate(
 					pageData?.template,
 					/** Pass a combined object of page and global data */
-					{ ...pageData, ...app.locals }
+					mergeDeep(pageData, app.locals)
 				);
 
 				res.setHeader('Content-Type', 'text/html');

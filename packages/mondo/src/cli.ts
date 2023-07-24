@@ -8,6 +8,7 @@ import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import bs from 'browser-sync';
 import { getSiteInternals } from '@/utils/internals.js';
 import { buildStaticSite } from '@/builder/static.js';
+import { generateServerBundle } from './builder/server.js';
 
 const SITE_ROOT = process.cwd();
 
@@ -91,16 +92,38 @@ program
 		switch (renderMode) {
 			case 'server':
 				logBlue(
-					`The renderMode has been set to 'server'. Generating the server files...`
+					`The renderMode has been set to 'server'. Generating server build...`
 				);
+
+				await generateServerBundle(CONFIG_FILE_DATA);
 				break;
-			// TODO: Implement server output
 			default:
 				logBlue(
 					`The renderMode has been set to 'ssg'. Generating the static build...`
 				);
 				buildStaticSite(CONFIG_FILE_DATA);
 		}
+	});
+
+program
+	.command('start')
+	.description('Start Mondo production server')
+	.action(() => {
+		const serverProcess = exec('node build/app.js');
+		/**
+		 * Log server processes fon updates
+		 */
+		serverProcess.stdout?.on('data', (data) => {
+			logBlue(`[Server Process]: ${data.toString()}`);
+		});
+
+		serverProcess.stderr?.on('data', (data) => {
+			logBlue(`[Server Error]: ${data.toString()}`);
+		});
+
+		serverProcess.on('exit', (code) => {
+			logBlue(`[Server Exit]: ${code?.toString()}`);
+		});
 	});
 
 program.parse();

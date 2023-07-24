@@ -73,6 +73,15 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
 
+  examples/simple-server:
+    dependencies:
+      '@mondo/mondo':
+        specifier: ^0.0.1
+        version: link:../../packages/mondo
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+
   examples/simple-static:
     dependencies:
       '@mondo/mondo':

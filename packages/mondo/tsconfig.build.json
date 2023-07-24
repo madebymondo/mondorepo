@@ -19,7 +19,8 @@
         "./src/cli.ts",
         "./src/dev/app.ts",
         "./src/builder/server.ts",
-        "./src/builder/static.ts"
+        "./src/builder/static.ts",
+        "./src/builder/app.ts",
     ],
     "exclude": [],
     "watchOptions": {
