@@ -12,7 +12,7 @@ export interface TemplateEngineParams {
 	/**  Template engine (defaults to njk) */
 	engine?: string;
 	/**  Express app */
-	app: Express;
+	app?: Express;
 	/** Views directory relative to root */
 	viewsDirectory: string;
 	/** Custom filter from config */
@@ -25,7 +25,7 @@ export class TemplateEngine {
 	views: TemplateEngineParams['viewsDirectory'];
 	filters?: TemplateEngineParams['filters'];
 	engine?: TemplateEngineParams['engine'];
-	app: TemplateEngineParams['app'];
+	app?: TemplateEngineParams['app'];
 
 	constructor(options: TemplateEngineParams) {
 		this.engine = options?.engine;
