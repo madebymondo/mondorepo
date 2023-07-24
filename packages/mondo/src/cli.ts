@@ -91,10 +91,21 @@ program
 		switch (renderMode) {
 			case 'server':
 				logBlue(
-					`The renderMode has been set to 'server'. Generating the server files...`
+					`The renderMode has been set to 'server'. Generating the pre-rendered server files...`
 				);
+
+				/**
+				 *  Pre-prendered HTML files will be built and live in
+				 * the 'build/html' directory.
+				 */
+				CONFIG_FILE_DATA['buildDirectory'] = path.join(
+					CONFIG_FILE_DATA['buildDirectory'] as string,
+					'html'
+				);
+
+				/** Generate HTML files for pre-rendered routes  */
+				buildStaticSite(CONFIG_FILE_DATA);
 				break;
-			// TODO: Implement server output
 			default:
 				logBlue(
 					`The renderMode has been set to 'ssg'. Generating the static build...`
