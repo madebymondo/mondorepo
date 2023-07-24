@@ -1,9 +1,56 @@
 import { ConfigOptions } from '@mondo/mondo';
 import { outputFile } from '@/utils/files.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
-import { logRed } from '@/utils/logger.js';
+import { logRed, logYellow } from '@/utils/logger.js';
 import { TemplateEngine } from '@/utils/templates.js';
+import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import path from 'path';
+import fs from 'fs';
+
+/**
+ * Gets all the global data and creates a single object that can be used in the templates
+ *
+ * @param globalDataDirectory Path to the globalDataDirectory set in config. Defaults to 'src/data'
+ * @returns An object of global data values to send to the template
+ */
+export async function getStaticGlobalData(globalDataDirectory: string) {
+	const globalDataDirectoryExists = fs.existsSync(globalDataDirectory);
+
+	if (!globalDataDirectoryExists) {
+		logYellow(
+			`No global data directory found at path: ${globalDataDirectory}`
+		);
+	}
+
+	if (globalDataDirectoryExists) {
+		if (globalDataDirectoryExists) {
+			const globalDataFiles = fs.readdirSync(globalDataDirectory);
+			const globalData = {};
+
+			for await (const dataFile of globalDataFiles) {
+				/* Read each data file and get it's default exported function */
+				const dataFileFunctions = await compileAndRunTS(
+					path.join(globalDataDirectory, dataFile)
+				);
+
+				const dataFileContents = dataFileFunctions.default;
+
+				/* Get the name of the file and the return value
+					of the callback */
+				const dataBasename = dataFile
+					.replace(globalDataDirectory, '')
+					.replace('.js', '')
+					.replace('.ts', '');
+
+				const data = await dataFileContents();
+
+				globalData[dataBasename] = data;
+			}
+
+			return globalData;
+		}
+	}
+}
 
 /**
  * Generates the HTML output for each route in the
@@ -16,6 +63,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 	const pagesDirectory = options.pagesDirectory as string;
 	const viewsDirectory = options.viewsDirectory as string;
 	const buildDirectory = options.buildDirectory as string;
+	const globalDataDirectory = options.globalDataDirectory as string;
 	const templateEngine = options.server.templateEngine;
 
 	const mergedRoutes = generateMergedRoutes(pagesDirectory);
@@ -24,6 +72,8 @@ export async function buildStaticSite(options: ConfigOptions) {
 		engine: templateEngine,
 		viewsDirectory,
 	});
+
+	const globalData = await getStaticGlobalData(globalDataDirectory);
 
 	// TODO: figure out how to implement global data files
 	// it can probably be passed in engine._renderTemplate as part
@@ -90,7 +140,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 
 				const compiledDynamicRouteHTML = await engine._renderTemplate(
 					createdDynamicRoute.template,
-					createdDynamicRoute,
+					{ ...globalData, ...createdDynamicRoute },
 					'build'
 				);
 
@@ -103,7 +153,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 			/**  Get the generated HTML and build path */
 			const compiledStaticRouteHTML = await engine._renderTemplate(
 				createdPage.template,
-				createdPage,
+				{ ...globalData, ...createdPage },
 				'build'
 			);
 			const staticRouteBuildPath = path.join(
