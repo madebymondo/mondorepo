@@ -1,10 +1,17 @@
-import { ConfigOptions, CreatePage } from '@mondo/mondo';
+import { ConfigOptions } from '@mondo/mondo';
 import { outputFile } from '@/utils/files.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
 import { logRed } from '@/utils/logger.js';
 import { TemplateEngine } from '@/utils/templates.js';
 import path from 'path';
 
+/**
+ * Generates the HTML output for each route in the
+ * pagesDirectory and writes the output to the
+ * buildDirectory
+ *
+ * @param options Mondo config options
+ */
 export async function buildStaticSite(options: ConfigOptions) {
 	const pagesDirectory = options.pagesDirectory as string;
 	const viewsDirectory = options.viewsDirectory as string;
@@ -25,6 +32,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 		const route = await resolveRoute({ routeFile, pagesDirectory });
 		const { data, routeName } = route;
 
+		/** Pages shouldn't be generated without a createPage function */
 		if (!data.createPage) {
 			throw new Error(
 				logRed(
@@ -43,11 +51,18 @@ export async function buildStaticSite(options: ConfigOptions) {
 				);
 			}
 
+			/**  Get and generated all possible dynamic routes */
 			const dynamicRoutesToGenerate = await data.createPaths();
 
 			for await (const dynamicRoute of dynamicRoutesToGenerate) {
 				let dynamicRoutePath = routeName;
 
+				/**
+				 * Replace the dynamic values of the route with
+				 * the matching param from the dynamicRoute.
+				 *
+				 * {page: '/pages/page-one'} -> /pages/:page - /pages/page-one
+				 * */
 				route.dynamicRouteParams?.forEach((param) => {
 					const replacedParam = dynamicRoute[param];
 
@@ -63,26 +78,30 @@ export async function buildStaticSite(options: ConfigOptions) {
 					'/index.html'
 				);
 
+				/** Create the context that is passed to createPage */
 				const dynamicRouteContext = {
 					params: dynamicRoute,
 				};
 
+				/** Get data passed to template  */
 				const createdDynamicRoute = await data.createPage(
 					dynamicRouteContext
 				);
 
-				const compiledDynamicRoute = await engine._renderTemplate(
+				const compiledDynamicRouteHTML = await engine._renderTemplate(
 					createdDynamicRoute.template,
 					createdDynamicRoute,
 					'build'
 				);
 
-				outputFile(dynamicRouteBuildPath, compiledDynamicRoute);
+				outputFile(dynamicRouteBuildPath, compiledDynamicRouteHTML);
 			}
 		} else {
+			/** Get data passed to template  */
 			const createdPage = await data.createPage();
 
-			const compiledStaticRoute = await engine._renderTemplate(
+			/**  Get the generated HTML and build path */
+			const compiledStaticRouteHTML = await engine._renderTemplate(
 				createdPage.template,
 				createdPage,
 				'build'
@@ -93,7 +112,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 				'/index.html'
 			);
 
-			outputFile(staticRouteBuildPath, compiledStaticRoute);
+			outputFile(staticRouteBuildPath, compiledStaticRouteHTML);
 		}
 	}
 }
