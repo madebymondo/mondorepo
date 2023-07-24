@@ -15,8 +15,8 @@ export async function generateServerBundle(options: ConfigOptions) {
 
 	const mergedRoutes = generateMergedRoutes(pagesDirectory);
 
-	/** Compile config file and output to build */
 	logBlue(`Compiling Mondo config file...`);
+	/** Compile config file and output to build */
 	const configPath = path.join(process.cwd(), 'mondo.config.ts');
 	const compiledConfigFile = await compileAndRunTS(configPath);
 	outputFile(
