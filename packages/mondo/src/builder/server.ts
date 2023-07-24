@@ -16,8 +16,9 @@ export async function generateServerBundle(options: ConfigOptions) {
 
 	const mergedRoutes = generateMergedRoutes(pagesDirectory);
 
-	logBlue(`Compiling Mondo config file...`);
 	/** Compile config file and output to build */
+	logBlue(`Compiling Mondo config file...`);
+
 	const configPath = path.join(process.cwd(), 'mondo.config.ts');
 	const importedConfigFile = await compileAndRunTS(configPath);
 	const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
@@ -26,8 +27,9 @@ export async function generateServerBundle(options: ConfigOptions) {
 		JSON.stringify(CONFIG_FILE_DATA)
 	);
 
-	logBlue(`Building server route files...`);
 	/** Convert all route files to JS and output to the build directory */
+	logBlue(`Building server route files...`);
+
 	for await (const routeFile of mergedRoutes) {
 		/** Compile the route file contents to JS */
 		const routeFileContents = fs.readFileSync(routeFile, {
@@ -48,8 +50,9 @@ export async function generateServerBundle(options: ConfigOptions) {
 
 	const globalDataFiles = walkSync(globalDataDirectory);
 
-	logBlue(`Building global data files...`);
 	/** Convert all global data files to JS and output to the build directory */
+	logBlue(`Building global data files...`);
+
 	for await (const globalDataFile of globalDataFiles) {
 		/** Compile the route file contents to JS */
 		const dataFileContents = fs.readFileSync(globalDataFile, {
@@ -71,11 +74,27 @@ export async function generateServerBundle(options: ConfigOptions) {
 	 *  Pre-prendered HTML files will be built and live in
 	 * the 'build/html' directory.
 	 */
+
+	logBlue(`Building pre-rendered server routes...`);
+
 	options['buildDirectory'] = path.join(
 		options['buildDirectory'] as string,
 		'html'
 	);
 
-	logBlue(`Building pre-rendered server routes...`);
 	await buildStaticSite(options);
+
+	/** Copy compiled app.js file to the build folder */
+	logBlue(`Generating server file...`);
+	const builtServerFilePath = path.join(
+		process.cwd(),
+		'node_modules/@mondo/mondo/dist/builder/app.js'
+	);
+	const compiledServerContents = fs.readFileSync(builtServerFilePath, {
+		encoding: 'utf-8',
+	});
+
+	const compiledServerPath = path.join(buildDirectory, 'app.js');
+
+	outputFile(compiledServerPath, compiledServerContents);
 }
