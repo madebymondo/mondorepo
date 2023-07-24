@@ -10,7 +10,7 @@ import fs from 'fs';
 /**
  * Gets all the global data and creates a single object that can be used in the templates.
  * It handles the generation of static HTML files for the 'ssg' render mode and 'server' routes
- * that are set to be prerendered.
+ * that are set to be pre-rendered.
  *
  * @param globalDataDirectory Path to the globalDataDirectory set in config. Defaults to 'src/data'
  * @returns An object of global data values to send to the template
@@ -78,9 +78,6 @@ export async function buildStaticSite(options: ConfigOptions) {
 
 	const globalData = await getStaticGlobalData(globalDataDirectory);
 
-	// TODO: figure out how to implement global data files
-	// it can probably be passed in engine._renderTemplate as part
-	// of the data e.g. {...globalData, createdPage}
 	for await (const routeFile of mergedRoutes) {
 		const route = await resolveRoute({ routeFile, pagesDirectory });
 		const { data, routeName } = route;
