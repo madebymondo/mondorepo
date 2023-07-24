@@ -11,13 +11,17 @@ const { port, templateEngine } = server;
 
 const app: Express = express();
 
-/* Make sure static routes and dynamic routes with more depth
-	are prioritized */
+/**
+ *  Make sure static routes and dynamic routes with more depth
+ * are prioritized
+ */
 const mergedRoutes = generateMergedRoutes(path.join(buildDirectory, 'pages'));
 
 app.use('/public', express.static(path.join(buildDirectory, 'public')));
 
 app.use('/', express.static(path.join(buildDirectory, 'html')));
+
+//TODO: Implement global data
 
 const engine = new TemplateEngine({
 	engine: templateEngine,
