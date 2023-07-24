@@ -5,7 +5,9 @@ const ROOT_PATH = path.join(process.cwd(), 'src');
 
 export const DEFAULT_MONDO_CONFIGURATION: ConfigOptions = {
 	root: ROOT_PATH,
+	renderMode: 'ssg',
 	pagesDirectory: path.join(ROOT_PATH, 'pages'),
+	buildDirectory: path.join(process.cwd(), 'build'),
 	viewsDirectory: path.join(ROOT_PATH, 'views'),
 	globalDataDirectory: path.join(ROOT_PATH, 'data'),
 	server: {

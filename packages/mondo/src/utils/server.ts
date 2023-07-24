@@ -84,9 +84,7 @@ export function initialzeGlobalDataMiddleware(
 				const dataFileFunctions = await compileAndRunTS(
 					path.join(globalDataDirectory, dataFile)
 				);
-				const dataFileContents = dataFileFunctions.find(
-					(func) => func.key === 'default'
-				);
+				const dataFileContents = dataFileFunctions.default;
 
 				/* Get the name of the file and the return value
                 of the callback */
@@ -95,7 +93,7 @@ export function initialzeGlobalDataMiddleware(
 					.replace('.js', '')
 					.replace('.ts', '');
 
-				const data = await dataFileContents.callback();
+				const data = await dataFileContents();
 
 				/* Set the value of each data file to a local global
 				 * variable in the app */

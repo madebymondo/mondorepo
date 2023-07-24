@@ -4,7 +4,8 @@
     "description": "",
     "type": "module",
     "scripts": {
-        "dev": "mondo dev"
+        "dev": "mondo dev",
+        "build": "mondo build"
     },
     "keywords": [],
     "author": "",
