@@ -81,7 +81,8 @@ for (const route of mergedRoutes) {
 			if (pageData) {
 				const outputHTML = await engine._renderTemplate(
 					pageData?.template,
-					pageData
+					/** Pass a combined object of page and global data */
+					{ ...pageData, ...app.locals }
 				);
 
 				res.setHeader('Content-Type', 'text/html');
