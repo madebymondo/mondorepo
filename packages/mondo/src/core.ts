@@ -2,7 +2,7 @@ import { TemplateEngine } from '@/utils/templates.js';
 import { generateMergedRoutes } from '@/utils/router.js';
 import { logGreen, logYellow, logRed } from '@/utils/logger.js';
 import { mergeDeep } from '@/utils/helpers.js';
-import { CreatePageContext, CreatePage, ConfigOptions } from '@mondo/mondo';
+import { CreatePageContext, CreatePage, ConfigOptions } from '@madebymondo/mondo';
 
 export {
 	generateMergedRoutes,

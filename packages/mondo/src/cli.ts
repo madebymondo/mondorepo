@@ -31,7 +31,7 @@ program
 		/* Run the development server file */
 		const devSeverPath = `${path.join(
 			process.cwd(),
-			'/node_modules/@mondo/mondo/dist/dev/app.js'
+			'/node_modules/@madebymondo/mondo/dist/dev/app.js'
 		)}`;
 
 		/* Live reload configuration */

@@ -1,4 +1,4 @@
-declare module '@mondo/mondo' {
+declare module '@madebymondo/mondo' {
 	import { RequestHandler } from 'express';
 	/** Options that can be passed to the mondo.config.ts file */
 	interface ConfigOptions {

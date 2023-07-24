@@ -1,4 +1,4 @@
-import { ConfigOptions } from '@mondo/mondo';
+import { ConfigOptions } from '@madebymondo/mondo';
 import path from 'path';
 import fs from 'fs';
 import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
