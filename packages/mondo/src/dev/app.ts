@@ -4,7 +4,6 @@ import { logGreen, logRed } from '@/utils/logger.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
 import { TemplateEngine } from '@/utils/templates.js';
 import { getSiteInternals } from '@/utils/internals.js';
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import {
 	configureAppInternals,
 	initialzeGlobalDataMiddleware,
@@ -17,8 +16,8 @@ import { mergeDeep } from '@/utils/helpers.js';
 const app: Express = express();
 
 /** Parse and compile the data from the mondo.config.ts file  */
-const configPath = path.join(process.cwd(), 'mondo.config.ts');
-const CONFIG_FILE_DATA = await compileAndRunTS(configPath);
+const configPath = path.join(process.cwd(), 'mondo.config.js');
+const CONFIG_FILE_DATA = await import(configPath);
 
 const internals = getSiteInternals(CONFIG_FILE_DATA);
 

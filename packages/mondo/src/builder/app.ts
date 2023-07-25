@@ -4,8 +4,14 @@ import fs from 'fs';
 import path from 'path';
 //@ts-ignore
 import CONFIG_DATA from './config.json' assert { type: 'json' };
-//@ts-ignore
-import { TemplateEngine, generateMergedRoutes, mergeDeep } from '@madebymondo/mondo';
+import {
+	//@ts-ignore
+	TemplateEngine,
+	//@ts-ignore
+	generateMergedRoutes,
+	//@ts-ignore
+	mergeDeep,
+} from '@madebymondo/mondo';
 
 const { server, buildDirectory, viewsDirectory } = CONFIG_DATA;
 const { port, templateEngine } = server;

@@ -1,9 +1,8 @@
-import { ConfigOptions } from '@madebymondo/mondo';
+import { ConfigOptions } from '@/types/mondo.js';
 import { outputFile } from '@/utils/files.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
 import { logRed, logYellow } from '@/utils/logger.js';
 import { TemplateEngine } from '@/utils/templates.js';
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import path from 'path';
 import fs from 'fs';
 import { mergeDeep } from '@/utils/helpers.js';
@@ -32,7 +31,7 @@ export async function getStaticGlobalData(globalDataDirectory: string) {
 
 			for await (const dataFile of globalDataFiles) {
 				/* Read each data file and get it's default exported function */
-				const dataFileFunctions = await compileAndRunTS(
+				const dataFileFunctions = await import(
 					path.join(globalDataDirectory, dataFile)
 				);
 

@@ -4,7 +4,6 @@ import path from 'path';
 import { exec } from 'child_process';
 import { Command } from 'commander';
 import { logGreen, logBlue } from '@/utils/logger.js';
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import bs from 'browser-sync';
 import { getSiteInternals } from '@/utils/internals.js';
 import { buildStaticSite } from '@/builder/static.js';
@@ -13,8 +12,8 @@ import { generateServerBundle } from './builder/server.js';
 const SITE_ROOT = process.cwd();
 
 /** Parse and compile the data from the mondo.config.ts file  */
-const configPath = path.join(SITE_ROOT, 'mondo.config.ts');
-const importedConfigFile = await compileAndRunTS(configPath);
+const configPath = path.join(SITE_ROOT, 'mondo.config.js');
+const importedConfigFile = await import(configPath);
 const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
 
 const { server, watchTargets, root, renderMode } = CONFIG_FILE_DATA;

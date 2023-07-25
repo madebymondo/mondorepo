@@ -1,18 +1,23 @@
 {
     "name": "@madebymondo/mondo",
-    "version": "0.0.1-beta",
+    "version": "0.0.2-beta",
     "author": "@madebymondo",
     "license": "MIT",
     "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
     "type": "module",
-    "main": "./dist/core.js",
-    "types": "./src/types/mondo.d.ts",
     "bin": {
         "mondo": "./dist/cli.js"
     },
     "exports": {
-        ".": "./dist/core.js"
+        ".": {
+            "import": {
+                "types": "./src/types/mondo.d.ts",
+                "default": "./dist/core.js"
+            }
+        }
     },
+    "types": "./src/types/mondo.d.ts",
+    "main": "./dist/core.js",
     "files": [
         "./dist/**/*.js",
         "./src/types/mondo.d.ts",
@@ -35,7 +40,6 @@
         "chalk": "*",
         "commander": "*",
         "dotenv": "*",
-        "esbuild": "*",
         "express": "^4.18.2",
         "browser-sync": "^2.29.3",
         "typescript": "*",
