@@ -40,7 +40,6 @@
         "chalk": "*",
         "commander": "*",
         "dotenv": "*",
-        "esbuild": "*",
         "express": "^4.18.2",
         "browser-sync": "^2.29.3",
         "typescript": "*",
