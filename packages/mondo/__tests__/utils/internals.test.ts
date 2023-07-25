@@ -1,5 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import { ConfigOptions, DefaultDynamicallyImportedFile } from '@madebymondo/mondo';
+import {
+	ConfigOptions,
+	DefaultDynamicallyImportedFile,
+} from '@/types/mondo.js';
 import {
 	getSiteInternals,
 	DEFAULT_MONDO_CONFIGURATION,

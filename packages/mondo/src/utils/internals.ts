@@ -1,4 +1,7 @@
-import { ConfigOptions, DefaultDynamicallyImportedFile } from '@madebymondo/mondo';
+import {
+	ConfigOptions,
+	DefaultDynamicallyImportedFile,
+} from '@/types/mondo.js';
 import path from 'path';
 import { mergeDeep } from '@/utils/helpers.js';
 

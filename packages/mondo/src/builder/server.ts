@@ -1,4 +1,3 @@
-import { ConfigOptions } from '@madebymondo/mondo';
 import fs from 'fs';
 import path from 'path';
 import { outputFile } from '@/utils/files.js';
@@ -8,7 +7,7 @@ import { logBlue } from '@/utils/logger.js';
 import { buildStaticSite } from '@/builder/static.js';
 import { getSiteInternals } from '@/utils/internals.js';
 
-export async function generateServerBundle(options: ConfigOptions) {
+export async function generateServerBundle(options) {
 	/** Generate as compiled manifest of all route data */
 	const pagesDirectory = options.pagesDirectory as string;
 	const buildDirectory = options.buildDirectory as string;
