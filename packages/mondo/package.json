@@ -1,6 +1,6 @@
 {
     "name": "@madebymondo/mondo",
-    "version": "0.0.1-beta",
+    "version": "0.0.2-beta",
     "author": "@madebymondo",
     "license": "MIT",
     "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
