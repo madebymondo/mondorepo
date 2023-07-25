@@ -16,6 +16,8 @@ export interface ConfigOptions {
 	server: ServerOptions;
 	/** Live-reload targets to watch for */
 	watchTargets?: string[];
+	/** An array of paths to passthrough to the build folder (relative to root) */
+	passthrough?: string[];
 }
 
 /** Configuration options passed to the server */
