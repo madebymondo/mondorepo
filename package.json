@@ -1,16 +1,15 @@
 {
     "name": "root",
     "version": "0.0.0",
-    "private": "true",
     "repository": {
         "type": "git",
         "url": "https://github.com/madebymondo/mondo"
     },
     "scripts": {
-        "mondo:add": "pnpm -F @mondo/mondo add",
-        "mondo:build": "pnpm -F @mondo/mondo build",
-        "mondo:dev": "pnpm -F @mondo/mondo dev",
-        "mondo:test": "pnpm -F @mondo/mondo test",
+        "mondo:add": "pnpm -F @madebymondo/mondo add",
+        "mondo:build": "pnpm -F @madebymondo/mondo build",
+        "mondo:dev": "pnpm -F @madebymondo/mondo dev",
+        "mondo:test": "pnpm -F @madebymondo/mondo test",
         "demo:dev": "pnpm mondo:build && pnpm -F simple-static dev",
         "demo:build": "pnpm mondo:build && pnpm -F simple-static build",
         "demo-server:build": "pnpm mondo:build && pnpm -F simple-server build",

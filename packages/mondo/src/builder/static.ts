@@ -1,4 +1,4 @@
-import { ConfigOptions } from '@mondo/mondo';
+import { ConfigOptions } from '@madebymondo/mondo';
 import { outputFile } from '@/utils/files.js';
 import { generateMergedRoutes, resolveRoute } from '@/utils/router.js';
 import { logRed, logYellow } from '@/utils/logger.js';

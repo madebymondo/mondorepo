@@ -1,7 +1,7 @@
 {
-    "name": "@mondo/mondo",
-    "version": "0.0.1",
-    "author": "madebymondo",
+    "name": "@madebymondo/mondo",
+    "version": "0.0.1-beta",
+    "author": "@madebymondo",
     "license": "MIT",
     "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
     "type": "module",
@@ -14,8 +14,7 @@
         ".": "./dist/core.js"
     },
     "files": [
-        "./dist/core.js",
-        "./dist/cli.js",
+        "./dist/**/*.js",
         "./src/types/mondo.d.ts",
         "./README.md"
     ],
@@ -24,20 +23,24 @@
         "build": "rm -rf dist && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
         "launch": "npm run test && npm run build",
         "dev": "tsc --project tsconfig.build.json && (concurrently \"tsc --project tsconfig.build.json  -w\" \"tsc-alias --project tsconfig.build.json -w\")",
-        "pack": "npm pack --dry-run"
+        "pack": "npm pack --dry-run",
+        "release": "npm run build && npm publish --access public"
     },
     "engines": {
         "node": ">=18.16.0"
     },
     "dependencies": {
         "@types/nunjucks": "^3.2.3",
+        "browser-sync": "^2.29.3",
         "chalk": "*",
         "commander": "*",
         "dotenv": "*",
         "esbuild": "*",
         "express": "^4.18.2",
         "fs-extra": "*",
-        "nunjucks": "^3.2.4"
+        "nunjucks": "^3.2.4",
+        "tsc-alias": "^1.8.7",
+        "typescript": "*"
     },
     "devDependencies": {
         "@babel/preset-env": "*",
@@ -46,11 +49,8 @@
         "@types/fs-extra": "^11.0.1",
         "@types/jest": "*",
         "babel-plugin-dynamic-import-node": "*",
-        "browser-sync": "^2.29.3",
         "jest": "*",
         "memfs": "*",
-        "ts-jest": "*",
-        "tsc-alias": "^1.8.7",
-        "typescript": "*"
+        "ts-jest": "*"
     }
 }

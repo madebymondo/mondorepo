@@ -10,6 +10,6 @@
     "keywords": [],
     "author": "",
     "dependencies": {
-        "@mondo/mondo": "^0.0.1"
+        "@madebymondo/mondo": "^0.0.1-beta"
     }
 }

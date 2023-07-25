@@ -1,4 +1,4 @@
-import { ConfigOptions } from '@mondo/mondo';
+import { ConfigOptions } from '@madebymondo/mondo';
 import fs from 'fs';
 import path from 'path';
 import { outputFile } from '@/utils/files.js';
@@ -88,7 +88,7 @@ export async function generateServerBundle(options: ConfigOptions) {
 	logBlue(`Generating server file...`);
 	const builtServerFilePath = path.join(
 		process.cwd(),
-		'node_modules/@mondo/mondo/dist/builder/app.js'
+		'node_modules/@madebymondo/mondo/dist/builder/app.js'
 	);
 	const compiledServerContents = fs.readFileSync(builtServerFilePath, {
 		encoding: 'utf-8',
