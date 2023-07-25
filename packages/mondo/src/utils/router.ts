@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import { logRed } from '@/utils/logger.js';
 
 /**
@@ -67,6 +66,7 @@ export async function resolveRoute(
 	 */
 	const routeName: ResolveRouteResults['routeName'] = routeFile
 		.replace('.ts', '')
+		.replace('.js', '')
 		.replace(pagesDirectory, '')
 		.replace('[', ':')
 		.replace(']', '')
@@ -82,7 +82,7 @@ export async function resolveRoute(
 		);
 	}
 
-	const data = await compileAndRunTS(routeFile);
+	const data = await import(routeFile);
 
 	return { routeName, isDynamicRoute, dynamicRouteParams, data };
 }

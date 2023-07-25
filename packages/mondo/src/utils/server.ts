@@ -1,7 +1,6 @@
 import { ConfigOptions } from '@/types/mondo.js';
 import path from 'path';
 import fs from 'fs';
-import { compileAndRunTS } from '@/utils/compileAndRunTs.js';
 import { logYellow } from '@/utils/logger.js';
 import { Express } from 'express';
 
@@ -81,7 +80,7 @@ export function initialzeGlobalDataMiddleware(
 		(async function () {
 			for await (const dataFile of globalDataFiles) {
 				/* Read each data file and get it's default exported function */
-				const dataFileFunctions = await compileAndRunTS(
+				const dataFileFunctions = await import(
 					path.join(globalDataDirectory, dataFile)
 				);
 				const dataFileContents = dataFileFunctions.default;
