@@ -68,8 +68,8 @@ export async function resolveRoute(
 		.replace('.ts', '')
 		.replace('.js', '')
 		.replace(pagesDirectory, '')
-		.replace('[', ':')
-		.replace(']', '')
+		.replaceAll('[', ':')
+		.replaceAll(']', '')
 		// Edge case to handle any root index files in a route directory
 		.replace('index', '');
 
