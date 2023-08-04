@@ -16,5 +16,5 @@ now everyone else has jumped to the next shiny thing. As you scramble to refacto
 ## Documentation
 
 -   [Get Started](./get-started.md)
--   [Building Pages](#)
+-   [Building Pages](./building-pages.md)
 -   [Recipies](./recipies/index.md)
