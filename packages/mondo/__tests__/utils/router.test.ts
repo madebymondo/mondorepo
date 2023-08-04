@@ -32,9 +32,10 @@ describe('Router performs as usual', () => {
 	});
 
 	it('resolveRoute should return the correct data for non-dynamic routes', async () => {
-		const compiledTS: ResolveRouteResults = await resolveRoute(
-			'/pages/index.ts'
-		);
+		const compiledTS: ResolveRouteResults = await resolveRoute({
+			routeFile: '/pages/index.ts',
+			pagesDirectory: '/pages',
+		});
 
 		expect(compiledTS.data.trim()).toBe(pageJSON['./index.ts']);
 		expect(compiledTS.routeName).toBe('/pages/index');
@@ -43,9 +44,10 @@ describe('Router performs as usual', () => {
 	});
 
 	it('resolveRoute should return the correct data for dynamic routes', async () => {
-		const compiledTS: ResolveRouteResults = await resolveRoute(
-			'/pages/projects/[project].ts'
-		);
+		const compiledTS: ResolveRouteResults = await resolveRoute({
+			routeFile: '/pages/projects/[project].ts',
+			pagesDirectory: '/pages',
+		});
 
 		expect(compiledTS.data.trim()).toBe(
 			pageJSON['./projects/[project].ts']
@@ -56,9 +58,10 @@ describe('Router performs as usual', () => {
 	});
 
 	it('resolveRoute should return the correct data for nested dynamic routes', async () => {
-		const compiledTS: ResolveRouteResults = await resolveRoute(
-			'/pages/[locale]/demos/[demo].ts'
-		);
+		const compiledTS: ResolveRouteResults = await resolveRoute({
+			routeFile: '/pages/[locale]/demos/[demo].ts',
+			pagesDirectory: '/pages',
+		});
 
 		expect(compiledTS.data.trim()).toBe(
 			pageJSON['./[locale]/demos/[demo].ts']
