@@ -10,6 +10,7 @@ now everyone else has jumped to the next shiny thing. As you scramble to refacto
 ## Core Features
 
 -   Built with Typescript
+-   File-based routing
 -   Static Site Generations
 -   Hybird server mode with prerendering
 
