@@ -3,7 +3,11 @@
     "version": "0.0.3-beta",
     "author": "@madebymondo",
     "license": "MIT",
-    "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
+    "description": "Mondo is hybrid web generator built with Typescript created by Made By Mondo to produce high quality digital products.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/madebymondo/mondorepo/tree/main/packages/mondo"
+    },
     "type": "module",
     "bin": {
         "mondo": "./dist/cli.js"
