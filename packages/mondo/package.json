@@ -1,6 +1,6 @@
 {
     "name": "@madebymondo/mondo",
-    "version": "0.0.2-beta",
+    "version": "0.0.3-beta",
     "author": "@madebymondo",
     "license": "MIT",
     "description": "Mondo is hybrid web framework built with Typescript created by Made By Mondo to produce high quality digital products.",
@@ -29,7 +29,8 @@
         "launch": "npm run test && npm run build",
         "dev": "tsc --project tsconfig.build.json && (concurrently \"tsc --project tsconfig.build.json  -w\" \"tsc-alias --project tsconfig.build.json -w\")",
         "pack": "npm pack --dry-run",
-        "release": "npm run build && npm publish --access public"
+        "release": "npm run build && npm publish --access public",
+        "version": "auto-changelog -p && git add CHANGELOG.md"
     },
     "engines": {
         "node": ">=18.16.0"
@@ -41,8 +42,6 @@
         "commander": "*",
         "dotenv": "*",
         "express": "^4.18.2",
-        "browser-sync": "^2.29.3",
-        "typescript": "*",
         "fs-extra": "*",
         "nunjucks": "^3.2.4",
         "tsc-alias": "^1.8.7",
@@ -51,12 +50,15 @@
     "devDependencies": {
         "@babel/preset-env": "*",
         "@babel/preset-typescript": "*",
+        "@jest/globals": "*",
         "@types/express": "^4.17.17",
         "@types/fs-extra": "^11.0.1",
         "@types/jest": "*",
+        "auto-changelog": "^2.4.0",
         "babel-plugin-dynamic-import-node": "*",
         "jest": "*",
         "memfs": "*",
-        "ts-jest": "*"
+        "ts-jest": "*",
+        "ts-node": "*"
     }
 }
