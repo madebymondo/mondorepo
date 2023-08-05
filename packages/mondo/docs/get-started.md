@@ -30,21 +30,21 @@ npm i @madebymondo/mondo
 
 A Mondo site requires the following site structure
 
-**`mondo.config.js` file in the project root**
+-   **`mondo.config.js` file in the project root**
 
-This is the configuration file. The following directories and files can be overridden here.
+    This is the configuration file. The following directories and files can be overridden here.
 
-**`pages` directory (defaults to `src/pages`)**
+-   **`pages` directory (defaults to `src/pages`)**
 
-The directory that will be used for file-based routing. For more info see [Building Pages](./building-pages.md)
+    The directory that will be used for file-based routing. For more info see [Building Pages](./building-pages.md)
 
-**`views` directory (default to `src/views`)**
+-   **`views` directory (default to `src/views`)**
 
-Contains all template and markup code
+    Contains all template and markup code
 
-**`data` directory (default to `src/data`)**
+-   **`data` directory (default to `src/data`)**
 
-Contains global data files that can be used in the tempalates. See [Data Files](./data-files.md)
+    Contains global data files that can be used in the tempalates. See [Data Files](./data-files.md)
 
 ### Example folder structure
 
