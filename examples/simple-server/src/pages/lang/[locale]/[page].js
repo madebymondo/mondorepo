@@ -24,14 +24,28 @@ export async function createPage(ctx) {
 		template: 'base.njk',
 		title: pageData?.title,
 		slug: pageData?.slug,
+		prerender: true,
 		locale,
 	};
 }
 
 // This function is only needed for SSG or if using pre-render in server mode
 export async function createPaths() {
-	return pages.map((pageData) => ({
-		// Return the [page] param for SSG
-		page: pageData.slug,
-	}));
+	/** All available locales per page  */
+	const locales = ['ja', 'en-ca'];
+
+	/** Generate every route for each locale  */
+	const localesPerPage = locales.map((locale) => {
+		return pages.map((pageData) => {
+			return {
+				page: pageData.slug,
+				locale,
+			};
+		});
+	});
+
+	/** Merge all the localized data into one array  */
+	const paths = localesPerPage.flat(1);
+
+	return paths;
 }
