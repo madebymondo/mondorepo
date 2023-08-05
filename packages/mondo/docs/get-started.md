@@ -8,6 +8,8 @@
 
 ## System Requirements
 
+-   At least [NodeJS](https://nodejs.org/en) v18.16.0
+
 ## Installation
 
 1.Install the `@madebymondo/mondo` package
