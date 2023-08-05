@@ -8,6 +8,7 @@ import bs from 'browser-sync';
 import { getSiteInternals } from '@/utils/internals.js';
 import { buildStaticSite } from '@/builder/static.js';
 import { generateServerBundle } from './builder/server.js';
+import perf from 'execution-time';
 
 const SITE_ROOT = process.cwd();
 
@@ -87,6 +88,8 @@ program
 	.command('build')
 	.description('Generates Mondo site output')
 	.action(async () => {
+		const performance = perf();
+		performance.start('Site Build');
 		/** Handle site building for different render modes  */
 		switch (renderMode) {
 			case 'server':
@@ -94,13 +97,22 @@ program
 					`The renderMode has been set to 'server'. Generating server build...`
 				);
 
-				await generateServerBundle(CONFIG_FILE_DATA);
+				await generateServerBundle(CONFIG_FILE_DATA).then(() => {
+					const results = performance.stop('Site Build');
+					logBlue(
+						`Completed Server build in ${results.preciseWords}`
+					);
+				});
+
 				break;
 			default:
 				logBlue(
 					`The renderMode has been set to 'ssg'. Generating the static build...`
 				);
-				buildStaticSite(CONFIG_FILE_DATA);
+				buildStaticSite(CONFIG_FILE_DATA).then(() => {
+					const results = performance.stop('Site Build');
+					logBlue(`Completed SSG build in ${results.preciseWords}`);
+				});
 		}
 	});
 
