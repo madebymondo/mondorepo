@@ -68,3 +68,7 @@ src/
 mondo.config.js
 package.json
 ```
+
+## Up Next
+
+[Learn how to build pages](./building-pages.md)
