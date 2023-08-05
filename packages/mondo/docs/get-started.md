@@ -48,6 +48,7 @@ Contains global data files that can be used in the tempalates. See [Data Files](
 
 ### Example folder structure
 
+```
 src/
 ├─ pages/
 │ ├─ index.js
@@ -62,3 +63,4 @@ src/
 │ ├─ currentYear.js
 mondo.config.js
 package.json
+```
