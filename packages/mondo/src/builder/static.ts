@@ -74,6 +74,7 @@ export async function buildStaticSite(options: ConfigOptions) {
 	const engine = new TemplateEngine({
 		engine: templateEngine,
 		viewsDirectory,
+		filters: options.templateFilters ? options.templateFilters : undefined,
 	});
 
 	const globalData = await getStaticGlobalData(globalDataDirectory);
