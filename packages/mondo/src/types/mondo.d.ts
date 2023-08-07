@@ -18,7 +18,11 @@ export interface ConfigOptions {
 	watchTargets?: string[];
 	/** An array of paths to passthrough to the build folder (relative to root) */
 	passthrough?: string[];
+	/** Filters passed to templates  */
+	templateFilters?: TemplateFilter[];
 }
+
+export type TemplateFilter = { [key: string]: CallableFunction | Promise<any> };
 
 /** Configuration options passed to the server */
 export interface ServerOptions {

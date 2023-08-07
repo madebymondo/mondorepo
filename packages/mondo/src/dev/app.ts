@@ -25,6 +25,7 @@ const {
 	viewsDirectory,
 	globalDataDirectory,
 	templateEngine,
+	templateFilters,
 	staticFilesRoute,
 	staticFilesPath,
 	pagesDirectory,
@@ -44,6 +45,7 @@ app.use(staticFilesRoute, express.static(staticFilesPath));
 const engine = new TemplateEngine({
 	engine: templateEngine,
 	viewsDirectory,
+	filters: templateFilters,
 	app,
 });
 

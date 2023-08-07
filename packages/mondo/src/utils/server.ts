@@ -12,6 +12,7 @@ export interface ConfigureAppInternalsResults {
 	templateEngine: ConfigOptions['server']['templateEngine'];
 	staticFilesRoute: string;
 	staticFilesPath: string;
+	templateFilters: ConfigOptions['templateFilters'];
 	port: number;
 }
 
@@ -36,6 +37,7 @@ export function configureAppInternals(
 	const staticFilesPath =
 		serverOptions?.staticFilesPath ?? path.join(process.cwd(), 'public');
 	const templateEngine = serverOptions?.templateEngine ?? 'njk';
+	const templateFilters = options?.templateFilters ?? undefined;
 
 	const port = serverOptions?.port ?? 3000;
 
@@ -47,6 +49,7 @@ export function configureAppInternals(
 		templateEngine,
 		staticFilesRoute,
 		staticFilesPath,
+		templateFilters,
 		port,
 	};
 }

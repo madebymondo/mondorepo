@@ -58,6 +58,9 @@ const engine = new TemplateEngine({
 	engine: templateEngine,
 	viewsDirectory,
 	app,
+	filters: CONFIG_DATA.templateFilters
+		? CONFIG_DATA.templateFilters
+		: undefined,
 });
 
 app.use('/public', express.static(path.join(buildDirectory, 'public')));
