@@ -1,5 +1,6 @@
 import nunjucks, { Environment as NunjucksEnvironment } from 'nunjucks';
 import { Express } from 'express';
+import { ConfigOptions } from '@/types/mondo.js';
 
 export interface RenderTemplateParams {
 	/* Path to template file relative to root */
@@ -16,8 +17,7 @@ export interface TemplateEngineParams {
 	/** Views directory relative to root */
 	viewsDirectory: string;
 	/** Custom filter from config */
-	//TODO: use a stronger type
-	filters?: CallableFunction[];
+	filters?: ConfigOptions['templateFilters'];
 }
 
 export class TemplateEngine {
@@ -63,11 +63,26 @@ export class TemplateEngine {
 					nunjucksEnv = nunjucks.configure(this.views);
 				}
 
-				/**  Call all filters with the nunjucksEnv */
+				/**  Add all filters to the nunjucksEnv */
 				if (this.filters) {
-					for await (const filter of this.filters) {
-						await filter(nunjucksEnv);
-					}
+					/** Get all available filter names */
+					const filterKeys = Object.keys(this.filters);
+
+					filterKeys.forEach((key) => {
+						/** Find the filter function from the name and check if it's async */
+						const filterFunction =
+							this.filters && this.filters[key];
+						const isAsyncFilter =
+							filterFunction[Symbol.toStringTag] ===
+							'AsyncFunction';
+
+						/** Add filter to env */
+						nunjucksEnv.addFilter(
+							key,
+							filterFunction,
+							isAsyncFilter
+						);
+					});
 				}
 
 				return nunjucksEnv.render(template, data);
