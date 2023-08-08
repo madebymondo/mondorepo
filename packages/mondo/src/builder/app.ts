@@ -3,7 +3,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import path from 'path';
 //@ts-ignore
-import CONFIG_DATA from './config.json' assert { type: 'json' };
+import CONFIG_DATA from './config.js';
 import {
 	//@ts-ignore
 	TemplateEngine,
@@ -13,8 +13,13 @@ import {
 	mergeDeep,
 } from '@madebymondo/mondo';
 
-const { server, buildDirectory, viewsDirectory } = CONFIG_DATA;
-const { port, templateEngine } = server;
+/** Set configuration from 'config.js' file with fallbacks  */
+const buildDirectory =
+	CONFIG_DATA.buildDirectory ?? path.join(process.cwd(), `build`);
+const viewsDirectory = CONFIG_DATA.viewsDirectory ?? 'src/views';
+const server = CONFIG_DATA.server;
+const port = server?.port ?? 3000;
+const templateEngine = server?.templateEngine ?? 'njk';
 
 const app: Express = express();
 
@@ -58,10 +63,13 @@ const engine = new TemplateEngine({
 	engine: templateEngine,
 	viewsDirectory,
 	app,
-	filters: CONFIG_DATA.templateFilters
-		? CONFIG_DATA.templateFilters
-		: undefined,
+	filters: CONFIG_DATA?.templateFilters,
 });
+
+/** Run all logic in the serverHook if it exists */
+if (server?.serverHook) {
+	server.serverHook(app, engine);
+}
 
 app.use('/public', express.static(path.join(buildDirectory, 'public')));
 
