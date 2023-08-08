@@ -49,6 +49,11 @@ const engine = new TemplateEngine({
 	app,
 });
 
+/** Run all logic in the serverHook if it exists */
+if (internals.server?.serverHook) {
+	internals.server.serverHook(app, engine);
+}
+
 for (const route of mergedRoutes) {
 	const routeResponse = await resolveRoute({
 		routeFile: route,
