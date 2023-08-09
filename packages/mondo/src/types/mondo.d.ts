@@ -1,5 +1,6 @@
-import { TemplateEngine } from '@/core.ts';
 import { RequestHandler, Express } from 'express';
+import { Environment as NunjucksEnvironment } from 'nunjucks';
+
 /** Options that can be passed to the mondo.config.ts file */
 export interface ConfigOptions {
 	/** Project root directory path. Defaults to "src" */
@@ -44,7 +45,7 @@ export interface ServerOptions {
 	serverWatchTargets?: string[];
 }
 
-type ServerHookCallback = (app: Express, engine: TemplateEngine) => void;
+type ServerHookCallback = (app: Express, engine: NunjucksEnvironment) => void;
 
 /** Object in a dynamically imported file */
 export interface FileData {
