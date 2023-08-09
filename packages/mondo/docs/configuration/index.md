@@ -25,7 +25,7 @@ export default {
 | Name                | Description                                                    | Default                                                                               |
 | ------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | root                | Project root directory path                                    | src                                                                                   |
-| renderMode          | Method to use when generating site output                      | ssg                                                                                   |
+| renderMode          | See (Render Modes)(./render-modes.md)                      | ssg                                                                                   |
 | buildDirectory      | Directory to write build output to                             | build                                                                                 |
 | pagesDirectory      | Directory for file-based routing. Relative to root             | src/pages                                                                             |
 | viewsDirectory      | Directory for template related files. Relative to root         | src/views                                                                             |
