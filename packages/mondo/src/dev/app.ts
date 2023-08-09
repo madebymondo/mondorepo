@@ -51,7 +51,7 @@ const engine = new TemplateEngine({
 
 /** Run all logic in the serverHook if it exists */
 if (internals.server?.serverHook) {
-	internals.server.serverHook(app, engine);
+	internals.server.serverHook(app, await engine._getTemplateEnv());
 }
 
 for (const route of mergedRoutes) {
