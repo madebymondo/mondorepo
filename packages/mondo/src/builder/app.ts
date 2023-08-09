@@ -68,7 +68,7 @@ const engine = new TemplateEngine({
 
 /** Run all logic in the serverHook if it exists */
 if (server?.serverHook) {
-	server.serverHook(app, await engine._getTemplateEnv());
+	server.serverHook(app, await engine._getTemplateEnv(templateEngine));
 }
 
 app.use('/public', express.static(path.join(buildDirectory, 'public')));
