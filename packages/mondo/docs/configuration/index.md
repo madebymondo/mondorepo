@@ -4,6 +4,7 @@
 
 -   [Options](#configuration-options)
 -   [Server Options](#server-options)
+-   [Render Modes](./render-modes.md)
 
 Having a `mondo.config.js` file in the project root is required.
 It exports a configuration object that suits your project's needs.
@@ -46,5 +47,3 @@ Configuration options passed to server.
 | port               | Port for development and production server                           | 3000       |
 | serverWatchTargets | Watch targets for nodemon. Relative to root                          | ['src']    |
 | serverHook         | Callback function that has access to server and template environment |            |
-
-
