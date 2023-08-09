@@ -2,6 +2,13 @@ export default {
 	renderMode: 'server',
 	server: {
 		port: 3000,
+		serverHook: (app, templateEnv) => {
+			app.use('*', (req, res, next) => {
+				console.log('This is a global server midleware');
+				console.log(templateEnv);
+				next();
+			});
+		},
 	},
 	templateFilters: {
 		filterExtension: addFilterExtensionFilter,

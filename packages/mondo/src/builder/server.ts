@@ -2,9 +2,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import { outputFile } from '@/utils/files.js';
 import { generateMergedRoutes, walkSync } from '@/utils/router.js';
-import { logBlue, logYellow } from '@/utils/logger.js';
+import { logBlue, logGreen, logYellow } from '@/utils/logger.js';
 import { buildStaticSite } from '@/builder/static.js';
-import { getSiteInternals } from '@/utils/internals.js';
 
 export async function generateServerBundle(options) {
 	/** Generate as compiled manifest of all route data */
@@ -20,12 +19,17 @@ export async function generateServerBundle(options) {
 	logBlue(`Compiling Mondo config file...`);
 
 	const configPath = path.join(process.cwd(), 'mondo.config.js');
-	const importedConfigFile = await import(configPath);
-	const CONFIG_FILE_DATA = getSiteInternals(importedConfigFile);
-	outputFile(
-		`${buildDirectory}/config.json`,
-		JSON.stringify(CONFIG_FILE_DATA)
-	);
+
+	if (!fs.existsSync(buildDirectory)) {
+		fs.mkdirSync(buildDirectory);
+	}
+
+	/** Copy the configuration file to the build */
+	await fs.copyFile(configPath, `${buildDirectory}/config.js`).then(() => {
+		logGreen(
+			`Successfully created build config file at ${buildDirectory}/config.js`
+		);
+	});
 
 	/** Copy all passthrough directories to the build */
 	if (passthroughDirectories) {

@@ -1,6 +1,6 @@
 import nunjucks, { Environment as NunjucksEnvironment } from 'nunjucks';
 import { Express } from 'express';
-import { ConfigOptions } from '@/types/mondo.js';
+import { ConfigOptions, ServerOptions } from '@/types/mondo.js';
 
 export interface RenderTemplateParams {
 	/* Path to template file relative to root */
@@ -11,7 +11,7 @@ export interface RenderTemplateParams {
 
 export interface TemplateEngineParams {
 	/**  Template engine (defaults to njk) */
-	engine?: string;
+	engine?: ServerOptions['templateEngine'];
 	/**  Express app */
 	app?: Express;
 	/** Views directory relative to root */
@@ -35,14 +35,15 @@ export class TemplateEngine {
 	}
 
 	/**
+	 * Get the template environment for a specific template
 	 *
-	 * @param template Path to template file in view directory
-	 * @param data Data that will be passed to the template
-	 * @param mode Current server mode (dev/build)
-	 * @returns HTML of compiled template
+	 * @param mode Method for how the environment should be configured. The 'build' varitaion if used for SSG.
+	 * @returns Template environment
 	 */
-	async _renderTemplate(template: string, data: any, mode?: 'build' | 'dev') {
-		// Fallback to nunjucks if no template engine is specified
+	async _getTemplateEnv(
+		template: ServerOptions['templateEngine'],
+		mode?: 'build'
+	): Promise<NunjucksEnvironment> {
 		switch (this.engine) {
 			default:
 				// eslint-disable-next-line no-case-declarations
@@ -84,6 +85,28 @@ export class TemplateEngine {
 						);
 					});
 				}
+
+				return nunjucksEnv;
+		}
+	}
+
+	/**
+	 *
+	 * @param template Path to template file in view directory
+	 * @param data Data that will be passed to the template
+	 * @param mode Current server mode (dev/build)
+	 * @returns HTML of compiled template
+	 */
+	async _renderTemplate(
+		template: ServerOptions['templateEngine'],
+		data: any,
+		mode?: 'build'
+	) {
+		// Fallback to nunjucks if no template engine is specified
+		switch (this.engine) {
+			default:
+				// eslint-disable-next-line no-case-declarations
+				const nunjucksEnv = await this._getTemplateEnv(template, mode);
 
 				return nunjucksEnv.render(template, data);
 		}

@@ -1,4 +1,6 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, Express } from 'express';
+import { Environment as NunjucksEnvironment } from 'nunjucks';
+
 /** Options that can be passed to the mondo.config.ts file */
 export interface ConfigOptions {
 	/** Project root directory path. Defaults to "src" */
@@ -34,9 +36,16 @@ export interface ServerOptions {
 	staticFilesRoute?: string;
 	/** Port for development and production server mode */
 	port?: number;
+	/**
+	 *  Callback function that has acces to the server.
+	 *  Not available for SSG or prerendered pages.
+	 */
+	serverHook?: ServerHookCallback;
 	/** Watch targtes for nodemon relative to root  */
 	serverWatchTargets?: string[];
 }
+
+type ServerHookCallback = (app: Express, engine: NunjucksEnvironment) => void;
 
 /** Object in a dynamically imported file */
 export interface FileData {
