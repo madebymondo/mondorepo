@@ -108,7 +108,7 @@ export class TemplateEngine {
 				// eslint-disable-next-line no-case-declarations
 				const nunjucksEnv = await this._getTemplateEnv(template, mode);
 
-				return nunjucksEnv.render(template, data);
+				return nunjucksEnv.render(template ?? 'njk', data);
 		}
 	}
 }
