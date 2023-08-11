@@ -6,6 +6,7 @@
 
 -   [System Requirements](#system-requirements)
 -   [Installation](#installation)
+-   [Configuration](./configuration/index.md)
 -   [Folder Structure](#folder-structure)
 
 ## System Requirements

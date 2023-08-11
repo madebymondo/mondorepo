@@ -29,7 +29,7 @@ export type TemplateFilter = { [key: string]: CallableFunction | Promise<any> };
 /** Configuration options passed to the server */
 export interface ServerOptions {
 	/** Template engine to use */
-	templateEngine: 'njk';
+	templateEngine?: 'njk';
 	/** Directory to serve static files and assets from. Defaults to "public" */
 	staticFilesPath?: string;
 	/** Route that serves the static files. Defaults to "/public" */
@@ -41,7 +41,7 @@ export interface ServerOptions {
 	 *  Not available for SSG or prerendered pages.
 	 */
 	serverHook?: ServerHookCallback;
-	/** Watch targtes for nodemon relative to root  */
+	/** Watch targets for nodemon relative to root  */
 	serverWatchTargets?: string[];
 }
 
