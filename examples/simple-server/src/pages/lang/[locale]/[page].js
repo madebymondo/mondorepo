@@ -24,7 +24,7 @@ export async function createPage(ctx) {
 		template: 'base.njk',
 		title: pageData?.title,
 		slug: pageData?.slug,
-		prerender: true,
+		prerender: pageData?.slug === 'pages/page-two',
 		locale,
 	};
 }
